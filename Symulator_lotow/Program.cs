@@ -12,6 +12,7 @@ namespace Symulator_lotow
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
+            Console.WriteLine("Heheheheheheh!!!");
         }
     }
 }
