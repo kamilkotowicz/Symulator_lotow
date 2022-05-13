@@ -1,5 +1,6 @@
 namespace Symulator_lotow
 {
+    using System.Diagnostics;
     internal static class Program
     {
         /// <summary>
@@ -11,8 +12,9 @@ namespace Symulator_lotow
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
-            Console.WriteLine("Heheheheheheh!!!");
+            Application.Run(new MainForm());
+
+            Debug.WriteLine("Heheheheheheh!!!");
         }
     }
 }
