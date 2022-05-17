@@ -19,17 +19,16 @@ namespace Symulator_lotow
         {
             InitializeComponent();
         }
-
+        private float skala_piksele_metry = 1F; //nie wiem czy to bedzie potrzebne
         private PictureBox pictureBox1 = new PictureBox();
         private Font fnt = new Font("Arial", 10);
-        private float skala_piksele_metry = 1F;
-        private void Form1_Load(object sender, System.EventArgs e)// funkcja musi byc polaczona ze zdarzeniem load
+        private void Form1_Load(object sender, EventArgs e)// funkcja musi byc polaczona ze zdarzeniem load
         {
             // Dock the PictureBox to the form and set its background to white.
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.BackColor = Color.White;
             // Connect the Paint event of the PictureBox to the event handler method.
-            pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            pictureBox1.Paint += new PaintEventHandler(this.pictureBox1_Paint);
             // Add the PictureBox control to the Form.
             this.Controls.Add(pictureBox1);
         }
@@ -47,8 +46,8 @@ namespace Symulator_lotow
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            Debug.WriteLine(pictureBox1.ClientSize.Width);
-            Debug.WriteLine(pictureBox1.ClientSize.Height);
+            //Debug.WriteLine(pictureBox1.ClientSize.Width);
+            //Debug.WriteLine(pictureBox1.ClientSize.Height);
             Graphics g = e.Graphics;
             Point[] points =
 {
@@ -78,6 +77,8 @@ namespace Symulator_lotow
             RysujNapis("Balon", Brushes.Red, new Point(700, 300), g);
             RysujSzybowiec(new Point(800, 300), g);
             RysujNapis("Szybowiec", Brushes.Red, new Point(800, 300), g);
+
+            RysujNiebezpieczenstwo(new Point(500, 500), g);
         }
 
         private void RysujProstokat(Point pos,Point size, Color kolor, Graphics g)
@@ -115,7 +116,7 @@ namespace Symulator_lotow
             g.DrawLines(pen, points);
         }
 
-        private void RysujNapis(string napis,Brush kolor,Point pos, Graphics g)
+        public void RysujNapis(string napis,Brush kolor,Point pos, Graphics g)
         {
             g.DrawString(napis, fnt, kolor, pos);
         }
@@ -139,6 +140,8 @@ namespace Symulator_lotow
         {
             RysujKwadrat(pos, bok, Color.Blue, g);
         }
+
+        //obiekty poruszajace sie powinny byc narysowane tylko raz, a potem tylko przesuwane, na razie wyswietlaja sie tak samo jak obiekty stale
         public void RysujObiektLatajacy(Point pos_srodka, Color kolor,int rozmiar, Graphics g)
         {
             Point p1 = new Point(pos_srodka.X, pos_srodka.Y - rozmiar);
@@ -169,10 +172,14 @@ namespace Symulator_lotow
         {
             RysujObiektLatajacy(pos_srodka, Color.Red,8, g); //rozmiar 8
         }
+        public void RysujNiebezpieczenstwo(Point pos,Graphics g)
+        {
+            RysujNapis("BUM!", Brushes.Red, pos, g);
+        }
         /*public void RysujObiekt(Object o, Graphics g)
         {
             int x, y, r, a, b;
-            if (o is ObiektyStale || o is StatekPowietrzny)
+            if (o is ObiektyStale || o is StatkiPowietrzne)
             {
                 x = Convert.ToInt32(o.getX() * skala_piksele_metry);
                 y = Convert.ToInt32(o.getY() * skala_piksele_metry);
@@ -197,6 +204,17 @@ namespace Symulator_lotow
             {
                 pol_a = Convert.ToInt32(o.getA() * skala_piksele_metry / 2.0);
                 RysujWiezowiec(new Point(x - pol_a, y - pol_a), pol_a * 2, g);
+            }
+        }*/
+        /*public void WyswietlMape(List<ObiektyStale> obiekty_stale, List<StatkiPowietrzne> statki_powietrzne, Graphics g)
+        {
+            foreach (ObiektyStale os in obiekty_stale)
+            {
+                RysujObiekt(os, g);
+            }
+            foreach(StatkiPowietrzne sp in statki_powietrzne)
+            {
+                RysujObiekt(sp, g);
             }
         }*/
 
