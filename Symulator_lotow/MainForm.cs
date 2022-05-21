@@ -15,21 +15,18 @@ namespace Symulator_lotow
     
     public partial class MainForm : Form
     {
+        private Ekran ekran = new Ekran();
         public MainForm()
         {
             InitializeComponent();
         }
         private float skala_piksele_metry = 1F; //nie wiem czy to bedzie potrzebne
-        private PictureBox pictureBox1 = new PictureBox();
-        private Font fnt = new Font("Arial", 10);
+        public PictureBox pictureBox1 = new PictureBox();
         private void Form1_Load(object sender, EventArgs e)// funkcja musi byc polaczona ze zdarzeniem load
         {
-            // Dock the PictureBox to the form and set its background to white.
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.BackColor = Color.White;
-            // Connect the Paint event of the PictureBox to the event handler method.
-            pictureBox1.Paint += new PaintEventHandler(this.pictureBox1_Paint);
-            // Add the PictureBox control to the Form.
+            
             this.Controls.Add(pictureBox1);
         }
 
@@ -43,8 +40,13 @@ namespace Symulator_lotow
             return pictureBox1.ClientSize.Width;
         }
 
+        public void Redraw()
+        {
+            this.pictureBox1.Invalidate();
+        }
 
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+
+        /*private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             //Debug.WriteLine(pictureBox1.ClientSize.Width);
             //Debug.WriteLine(pictureBox1.ClientSize.Height);
@@ -67,6 +69,7 @@ namespace Symulator_lotow
             RysujNapis("Wiezowiec", Brushes.Red, new Point(400, 200), g);
             RysujKomin(new Point(500, 100), 14, g);
             RysujNapis("Komin", Brushes.Blue, new Point(500, 100), g);
+
             RysujSamolot(new Point(300, 100), g);
             RysujNapis("Samolot", Brushes.Red, new Point(300, 100), g);
             RysujDron(new Point(700, 100), g);
@@ -79,69 +82,23 @@ namespace Symulator_lotow
             RysujNapis("Szybowiec", Brushes.Red, new Point(800, 300), g);
 
             RysujNiebezpieczenstwo(new Point(500, 500), g);
-        }
-
-        private void RysujProstokat(Point pos,Point size, Color kolor, Graphics g)
-        {
-            SolidBrush brush = new SolidBrush(kolor);
-            Rectangle rect = new Rectangle(pos.X, pos.Y, size.X, size.Y);
-            g.FillRectangle(brush, rect);
-        }
-
-        private void RysujKwadrat(Point pos,int bok, Color kolor, Graphics g)
-        {
-            RysujProstokat(new Point(pos.X,pos.Y), new Point(bok,bok), kolor, g);
-        }
-
-        private void RysujKolo(Point pos,int r,Color kolor, Graphics g)
-        {
-            SolidBrush brush = new SolidBrush(kolor);
-            g.FillEllipse(brush, pos.X, pos.Y, 2*r, 2*r);
-        }
-
-        private void RysujWielokat(Point[] wierzcholki, Color kolor, Graphics g)
+        }*/
+        /*private void RysujWielokat(Point[] wierzcholki, Color kolor, Graphics g)
         {
             SolidBrush brush = new SolidBrush(kolor);
             g.FillPolygon(brush, wierzcholki);
         }
-
-        private void RysujTrojkat(Point p1,Point p2,Point p3,Color kolor, Graphics g)
+        private void RysujTrojkat(Point p1, Point p2, Point p3, Color kolor, Graphics g)
         {
             Point[] wierzcholki = { p1, p2, p3 };
             RysujWielokat(wierzcholki, kolor, g);
         }
-        private void RysujLamana(Point[] points,Color kolor, Graphics g)
+        private void RysujLamana(Point[] points, Color kolor, Graphics g)
         {
             Pen pen = new Pen(kolor, 3);//3 to grubosc linii
             g.DrawLines(pen, points);
         }
 
-        public void RysujNapis(string napis,Brush kolor,Point pos, Graphics g)
-        {
-            g.DrawString(napis, fnt, kolor, pos);
-        }
-
-        public void RysujDrzewo(Point pos, int r, Graphics g) // promien <4,12>
-        {
-            RysujKolo(pos, r, Color.Green, g);
-        }
-
-        public void RysujKomin(Point pos,int r,Graphics g) //promien <8,20>
-        {
-            RysujKolo(pos, r, Color.Brown, g);
-        }
-
-        public void RysujBlok(Point pos,Point size,Graphics g)// boki <40,120>
-        {
-            RysujProstokat(pos, size, Color.Gray, g);
-        }
-
-        public void RysujWiezowiec(Point pos,int bok, Graphics g) //bok <40,120>
-        {
-            RysujKwadrat(pos, bok, Color.Blue, g);
-        }
-
-        //obiekty poruszajace sie powinny byc narysowane tylko raz, a potem tylko przesuwane, na razie wyswietlaja sie tak samo jak obiekty stale
         public void RysujObiektLatajacy(Point pos_srodka, Color kolor,int rozmiar, Graphics g)
         {
             Point p1 = new Point(pos_srodka.X, pos_srodka.Y - rozmiar);
@@ -172,10 +129,12 @@ namespace Symulator_lotow
         {
             RysujObiektLatajacy(pos_srodka, Color.Red,8, g); //rozmiar 8
         }
+
         public void RysujNiebezpieczenstwo(Point pos,Graphics g)
         {
             RysujNapis("BUM!", Brushes.Red, pos, g);
-        }
+        }*/
+
         /*public void RysujObiekt(Object o, Graphics g)
         {
             int x, y, r, a, b;
