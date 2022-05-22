@@ -8,6 +8,7 @@ namespace Symulator_lotow
         protected int id;
         protected int wysokosc;
         protected Punkt pozycja_srodka;
+        public string nazwa;
 
     }
 

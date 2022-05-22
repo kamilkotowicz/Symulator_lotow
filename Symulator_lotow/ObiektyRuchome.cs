@@ -8,9 +8,9 @@ namespace Symulator_lotow
 {
     public class Punkt
     {
-        public int x, y, z;//powinno byc prywatne tylko dodac funkcje get x,y,z
+        public double x, y, z;//powinno byc prywatne tylko dodac funkcje get x,y,z
 
-        public Punkt(int xx, int yy, int zz)
+        public Punkt(double xx, double yy, double zz)
         {
             x = xx;
             y = yy;
@@ -39,18 +39,20 @@ namespace Symulator_lotow
             punkt_docelowy = t.punkt_docelowy;
             kierunek = t.kierunek;
         }
-        /*private Punkt skladowe_predkosci()
+        public Punkt skladowe_predkosci()
         {
-
-        }*/
+            //Funkcja powinna zwracac skladowe predkosci w kierunkacj x,y,z
+            return new Punkt(0, 0, 0);
+        }
     }
 
     public class Statek_powietrzny
     {
         protected int id;
-        protected Punkt aktualna_pozycja;
-        protected Trasa trasa;
+        public Punkt aktualna_pozycja;
+        public Trasa trasa;
         protected readonly int rozmiar;
+        public string nazwa;
 
         public void zmien_trase_recznie(Trasa t1)
         {

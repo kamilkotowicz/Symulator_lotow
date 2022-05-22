@@ -2,15 +2,17 @@
 using System.Windows.Forms;
 public class KontrolerRadaru
 {
-    MainForm mainForm;
-    Ekran ekran;
+    private MainForm mainForm;
+    private Ekran ekran;
+    private Symulator symulator;
 
-    public MainForm MainForm { get; }
+    //public MainForm MainForm { get; }
 
-    public KontrolerRadaru(Symulator_lotow.MainForm mainForm)
+    public KontrolerRadaru(MainForm mainForm)
 	{
         this.mainForm = mainForm;
         ekran = new Ekran();
+        symulator = new Symulator();
         mainForm.pictureBox1.Paint += new PaintEventHandler(RysujZawartoscPictureBoxa);
     }
     public static int licznik = 0;
@@ -56,9 +58,6 @@ public class KontrolerRadaru
         }
 
     }
-
-    //Symulator sym;
-    //Ekran ek;
     public void WczytajMape()
     {
         // wczytywanie mapy z pliku
@@ -66,10 +65,9 @@ public class KontrolerRadaru
     private void SymulujRuch(Object myObject, EventArgs e)
     {
         //Zmien pozycje obiektow w symulatorze
-
-        //Zresetuj formularz
+        symulator.SymulujRuch();
+        //Narysuj ponownie wszystkie obiekty
         mainForm.Redraw();
-        //RysujZawartoscPictureBoxa(myObject, e);
 
     }
     public void UruchomSymulacje()
