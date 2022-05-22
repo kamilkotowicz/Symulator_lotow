@@ -6,103 +6,71 @@ using System.Threading.Tasks;
 
 namespace Symulator_lotow
 {
-    public class Punkt
-    {
-        public double x, y, z;//powinno byc prywatne tylko dodac funkcje get x,y,z
 
-        public Punkt(double xx, double yy, double zz)
-        {
-            x = xx;
-            y = yy;
-            z = zz;
-        }
-    }
-
-    public class Trasa
-    {
-        private int wysokosc;
-        private int predkosc;
-        private Punkt punkt_docelowy;
-        private Punkt kierunek;
-
-        public Trasa(int wysokosc, int predkosc, Punkt kierunek)
-        {
-            this.wysokosc = wysokosc;
-            this.predkosc = predkosc;
-            this.kierunek = new Punkt(kierunek.x, kierunek.y, kierunek.z);
-        }
-
-        public Trasa(Trasa t)
-        {
-            wysokosc = t.wysokosc;
-            predkosc = t.predkosc;
-            punkt_docelowy = t.punkt_docelowy;
-            kierunek = t.kierunek;
-        }
-        public Punkt skladowe_predkosci()
-        {
-            //Funkcja powinna zwracac skladowe predkosci w kierunkacj x,y,z
-            return new Punkt(0, 0, 0);
-        }
-    }
-
-    public class Statek_powietrzny
+    public class ObiektyRuchome
     {
         protected int id;
         public Punkt aktualna_pozycja;
         public Trasa trasa;
-        protected readonly int rozmiar;
+        public readonly int rozmiar = 1;// rozmiar statku powietrznego bedzie potrzebny przy wykrywaniu kolizji
         public string nazwa;
+        public virtual int hmin { get; }
+        public virtual int hmax { get; }
+        public virtual int vmin { get; }
+        public virtual int vmax { get; }
+
 
         public void zmien_trase_recznie(Trasa t1)
         {
             trasa = new Trasa(t1);
         }
 
-        /*public Trasa generuj_trase_losowo()
+        public Trasa generuj_trase_losowo()
         {
+            return new Trasa(5000, 500, new Punkt(500,500,5000));
+            //Ta funkcja powinna wygenerowac losowa trase
             //wysokosc = rand..
-        }*/
+        }
     }
 
-    public class Dron : Statek_powietrzny
+    public class Dron : ObiektyRuchome
     {
-        public const int hmin=0;
-        public const int hmax=0;
-        public const int vmin=0;
-        public const int vmax=0;
+        public override int hmin { get => 0; } // ustawic wartosci hmin,hmax,vmin,vmax
+        public override int hmax { get => 10000; }
+        public override int vmin { get => 0; }
+        public override int vmax { get => 1000; }
     }
 
-    public class Samolot : Statek_powietrzny
+    public class Samolot : ObiektyRuchome
     {
-        public const int hmin=0;
-        public const int hmax=0;
-        public const int vmin=0;
-        public const int vmax=0;
+        public override int hmin { get => 0; }
+        public override int hmax { get => 10000; }
+        public override int vmin { get => 0; }
+        public override int vmax { get => 1000; }
     }
 
-    public class Smiglowiec : Statek_powietrzny
+    public class Smiglowiec : ObiektyRuchome
     {
-        public const int hmin=0;
-        public const int hmax=0;
-        public const int vmin=0;
-        public const int vmax=0;
+        public override int hmin { get => 0; }
+        public override int hmax { get => 10000; }
+        public override int vmin { get => 0; }
+        public override int vmax { get => 1000; }
     }
 
-    public class Balon : Statek_powietrzny
+    public class Balon : ObiektyRuchome
     {
-        public const int hmin=0;
-        public const int hmax=0;
-        public const int vmin=0;
-        public const int vmax=0;
+        public override int hmin { get => 0; }
+        public override int hmax { get => 10000; }
+        public override int vmin { get => 0; }
+        public override int vmax { get => 1000; }
     }
 
-    public class Szybowiec : Statek_powietrzny
+    public class Szybowiec : ObiektyRuchome
     {
-        public const int hmin=0;
-        public const int hmax=0;
-        public const int vmin=0;
-        public const int vmax=0;
+        public override int hmin { get => 0; }
+        public override int hmax { get => 10000; }
+        public override int vmin { get => 0; }
+        public override int vmax { get => 1000; }
     }
 
 }

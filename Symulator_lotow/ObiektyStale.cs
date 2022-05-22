@@ -3,34 +3,34 @@
 namespace Symulator_lotow
 {
 
-    class Obiekty_stale
+    class ObiektyStale
     {
         protected int id;
-        protected int wysokosc;
-        protected Punkt pozycja_srodka;
+        public int wysokosc;
+        public Punkt pozycja_srodka;
         public string nazwa;
 
     }
 
-    class Drzewo : Obiekty_stale
+    class Drzewo : ObiektyStale
     {
-        private readonly int promien;
+        public readonly int promien;
     }
 
-    class Blok : Obiekty_stale
+    class Blok : ObiektyStale
     {
-        private readonly int dlugosc;
-        private readonly int szerokosc;
+        public readonly int dlugosc;
+        public readonly int szerokosc;
     }
 
-    class Wieżowiec : Obiekty_stale
+    class Wiezowiec : ObiektyStale
     {
-        private readonly int bok;
+        public readonly int bok;
     }
 
-    class Komin : Obiekty_stale
+    class Komin : ObiektyStale
     {
-        private readonly int promien;
+        public readonly int promien;
     }
 
 

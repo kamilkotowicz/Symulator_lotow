@@ -6,7 +6,6 @@ public class KontrolerRadaru
     private Ekran ekran;
     private Symulator symulator;
 
-    //public MainForm MainForm { get; }
 
     public KontrolerRadaru(MainForm mainForm)
 	{
@@ -60,23 +59,24 @@ public class KontrolerRadaru
     }
     public void WczytajMape()
     {
-        // wczytywanie mapy z pliku
+        string sciezka = "nazwa_pliku.txt"; //zmieniec nazwe pliku na wlasciwa
+        symulator.wczytaj_z_pliku(sciezka);
+
     }
     private void SymulujRuch(Object myObject, EventArgs e)
     {
-        //Zmien pozycje obiektow w symulatorze
-        symulator.SymulujRuch();
-        //Narysuj ponownie wszystkie obiekty
+        double krok = 1;//trzeba pzetestowac jaka tu dac wartosc
+        symulator.SymulujRuch(krok);
+        symulator.WykryjKolizje();//tutaj trzeba dodac jeszcze obsluge kolizji
         mainForm.Redraw();
-
     }
     public void UruchomSymulacje()
     {
         WczytajMape();
-        // co jakis okres czasu: aktualizuj pozycje w symuatorze i przesun obiekty na ekranie
         System.Windows.Forms.Timer t1 = new System.Windows.Forms.Timer();
-        t1.Tick += new EventHandler(SymulujRuch);//funkcja wywolujaca sie co jakis czas
+        t1.Tick += new EventHandler(SymulujRuch);
         t1.Interval = 200;
         t1.Start();
     }
+
 }
