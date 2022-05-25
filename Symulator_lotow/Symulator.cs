@@ -9,8 +9,12 @@ namespace Symulator_lotow
 		public Symulator()
 		{
 		}
-		public void wczytaj_z_pliku(string sciezka)
+		public void wczytaj_z_pliku(string text)
         {
+			//string text = System.IO.File.ReadAllText(@"G:\PO\Projekt\Mapa.txt");
+
+
+
 			//Funkcja powinna wczytywac z pliku do list obiekty_stale
 			//Jesli plik nie istnieje powinien byc zwrocony wyjatek.
 		}

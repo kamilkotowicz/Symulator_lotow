@@ -14,23 +14,23 @@ namespace Symulator_lotow
 
     class Drzewo : ObiektyStale
     {
-        public readonly int promien;
+        public readonly int promien = 0;
     }
 
     class Blok : ObiektyStale
     {
-        public readonly int dlugosc;
-        public readonly int szerokosc;
+        public readonly int dlugosc = 0;
+        public readonly int szerokosc = 0 ;
     }
 
     class Wiezowiec : ObiektyStale
     {
-        public readonly int bok;
+        public readonly int bok = 0;
     }
 
     class Komin : ObiektyStale
     {
-        public readonly int promien;
+        public readonly int promien = 0;
     }
 
 
