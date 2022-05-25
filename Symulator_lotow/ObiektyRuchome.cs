@@ -27,50 +27,54 @@ namespace Symulator_lotow
 
         public Trasa generuj_trase_losowo()
         {
-            return new Trasa(5000, 500, new Punkt(500,500,5000));
-            //Ta funkcja powinna wygenerowac losowa trase
-            //wysokosc = rand..
+            Random generator = new Random(0);
+            int wysokosc = generator.Next(0, 11000);
+            int predkosc = generator.Next(5, 1000);
+            int x = generator.Next(0, 1000);
+            int y = generator.Next(0, 800);
+            return new Trasa(wysokosc, predkosc, new Punkt(x,y,wysokosc));
         }
+
     }
 
     public class Dron : ObiektyRuchome
     {
-        public override int hmin { get => 0; } // ustawic wartosci hmin,hmax,vmin,vmax
-        public override int hmax { get => 10000; }
-        public override int vmin { get => 0; }
-        public override int vmax { get => 1000; }
+        public override int hmin { get => 0; } 
+        public override int hmax { get => 100; }
+        public override int vmin { get => 5; }
+        public override int vmax { get => 100; }
     }
 
     public class Samolot : ObiektyRuchome
     {
-        public override int hmin { get => 0; }
-        public override int hmax { get => 10000; }
-        public override int vmin { get => 0; }
+        public override int hmin { get => 5000; }
+        public override int hmax { get => 11000; }
+        public override int vmin { get => 200; }
         public override int vmax { get => 1000; }
     }
 
     public class Smiglowiec : ObiektyRuchome
     {
-        public override int hmin { get => 0; }
-        public override int hmax { get => 10000; }
-        public override int vmin { get => 0; }
-        public override int vmax { get => 1000; }
+        public override int hmin { get => 50; }
+        public override int hmax { get => 7000; }
+        public override int vmin { get => 10; }
+        public override int vmax { get => 300; }
     }
 
     public class Balon : ObiektyRuchome
     {
-        public override int hmin { get => 0; }
-        public override int hmax { get => 10000; }
-        public override int vmin { get => 0; }
-        public override int vmax { get => 1000; }
+        public override int hmin { get => 50; }
+        public override int hmax { get => 2000; }
+        public override int vmin { get => 20; }
+        public override int vmax { get => 40; }
     }
 
     public class Szybowiec : ObiektyRuchome
     {
-        public override int hmin { get => 0; }
-        public override int hmax { get => 10000; }
-        public override int vmin { get => 0; }
-        public override int vmax { get => 1000; }
+        public override int hmin { get => 200; }
+        public override int hmax { get => 600; }
+        public override int vmin { get => 100; }
+        public override int vmax { get => 300; }
     }
 
 }

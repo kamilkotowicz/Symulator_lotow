@@ -25,6 +25,8 @@
         public Punkt skladowe_predkosci()
         {
             //Funkcja powinna zwracac skladowe predkosci w kierunkacj x,y,z
+            //vx = (x.punkt_docelowy - x.aktualna_pozycja) * predkosc / Math.sqrt((x.punkt_docelowy - x.aktualna_pozycja) * (x.punkt_docelowy - x.aktualna_pozycja) + (y.punkt_docelowy - y.aktualna_pozycja) * (y.punkt_docelowy - y.aktualna_pozycja));
+            //vy = (y.punkt_docelowy - y.aktualna_pozycja) * predkosc / Math.sqrt((x.punkt_docelowy - x.aktualna_pozycja) * (x.punkt_docelowy - x.aktualna_pozycja) + (y.punkt_docelowy - y.aktualna_pozycja) * (y.punkt_docelowy - y.aktualna_pozycja));
             return new Punkt(0, 0, 0);
         }
     }
