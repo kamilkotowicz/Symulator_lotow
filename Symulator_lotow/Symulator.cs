@@ -72,7 +72,7 @@ namespace Symulator_lotow
 		{
 			foreach (ObiektyRuchome sp in statki_powietrzne)
 			{
-				Punkt v = sp.trasa.skladowe_predkosci();
+				Punkt v = sp.skladowe_predkosci();
 				sp.aktualna_pozycja.x += krok * v.x;
 				sp.aktualna_pozycja.y += krok * v.y;
 			}

@@ -28,11 +28,18 @@ namespace Symulator_lotow
         public Trasa generuj_trase_losowo()
         {
             Random generator = new Random(0);
-            int wysokosc = generator.Next(0, 11000);
-            int predkosc = generator.Next(5, 1000);
+            int wysokosc = generator.Next(hmin, hmax+1);
+            int predkosc = generator.Next(vmin, vmax+1);
             int x = generator.Next(0, 1000);
-            int y = generator.Next(0, 800);
+            int y = generator.Next(0, 1000);
             return new Trasa(wysokosc, predkosc, new Punkt(x,y,wysokosc));
+        }
+        public Punkt skladowe_predkosci()
+        {
+            //Funkcja powinna zwracac skladowe predkosci w kierunkacj x,y,z
+            double vx = (trasa.punkt_docelowy.x - aktualna_pozycja.x) * trasa.predkosc / Math.Sqrt((trasa.punkt_docelowy.x - aktualna_pozycja.x) * (trasa.punkt_docelowy.x - aktualna_pozycja.x) + (trasa.punkt_docelowy.y - aktualna_pozycja.y) * (trasa.punkt_docelowy.y - aktualna_pozycja.y));
+            double vy = (trasa.punkt_docelowy.y - aktualna_pozycja.y) * trasa.predkosc / Math.Sqrt((trasa.punkt_docelowy.x - aktualna_pozycja.x) * (trasa.punkt_docelowy.x - aktualna_pozycja.x) + (trasa.punkt_docelowy.y - aktualna_pozycja.y) * (trasa.punkt_docelowy.y - aktualna_pozycja.y));
+            return new Punkt(vx, vy, 0);
         }
 
     }
