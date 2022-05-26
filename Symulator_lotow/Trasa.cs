@@ -2,7 +2,7 @@
 {
     public class Trasa
     {
-        private int wysokosc;
+        public int wysokosc;
         public int predkosc;
         public Punkt punkt_docelowy;
         private Punkt kierunek;

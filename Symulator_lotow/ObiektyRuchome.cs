@@ -22,7 +22,9 @@ namespace Symulator_lotow
 
         public void zmien_trase_recznie(Trasa t1)
         {
-            trasa = new Trasa(t1);
+            //jesli "wykryto kolizje"
+            int nowawysokosc = int.Parse(Console.ReadLine());
+            trasa = new Trasa(nowawysokosc, trasa.predkosc, trasa.punkt_docelowy);
         }
 
         public Trasa generuj_trase_losowo()

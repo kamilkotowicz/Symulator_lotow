@@ -22,7 +22,34 @@ namespace Symulator_lotow
 		public void WykryjKolizje()
         {
 			//Funkcja musi jakosc przekazac informacje o kolizjach do kontrolera lotu
-        }
+			//należy każdy statek powietrzny porównać z każdym statkiem powietrznym i obiektem stałym
+			//wykryj kolizje jeśli odległość jest mniejsza niż 100
+			//1. Porównujemy wysokość (składowa z)
+			foreach (ObiektyRuchome sp in statki_powietrzne)
+			{
+				foreach (ObiektyRuchome sp2 in statki_powietrzne)
+				{
+					if (sp2 != sp)
+					{
+						if (Math.Abs(sp2.aktualna_pozycja.z - sp.aktualna_pozycja.z) < 100)
+                        {
+							//wykryto kolizje - wysokosc miedzy obiektami mniejsza od 100
+                        }
+                        else
+                        {
+							//2. Sprawdzamy czy na płaszczyźnie odległość jest mniejsza od 100 (skladowe x,y)
+							if(Math.Sqrt(Math.Abs(sp.aktualna_pozycja.x- sp2.aktualna_pozycja.x)* Math.Abs(sp.aktualna_pozycja.x - sp2.aktualna_pozycja.x) + Math.Abs(sp.aktualna_pozycja.y - sp2.aktualna_pozycja.y) * Math.Abs(sp.aktualna_pozycja.y - sp2.aktualna_pozycja.y)) <100)
+                            {
+								//wykryto kolizje
+                            }
+                        }
+					}
+				}
+			}
+
+
+
+		}
 
 		public void GenerujStatkiPowietrzne()
         {
