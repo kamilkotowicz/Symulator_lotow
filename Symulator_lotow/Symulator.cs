@@ -11,10 +11,28 @@ namespace Symulator_lotow
 		}
 		public void wczytaj_z_pliku(string text)
         {
-			//string text = System.IO.File.ReadAllText(@"G:\PO\Projekt\Mapa.txt");
+			try
+			{
+				string lokalizacja = text; //lokalizacja pliku txt
+				string[] linie = File.ReadAllLines(lokalizacja); //wpisanie do każdego miejsca w tablicy po linii z pliku txt
+				string[] dane;
+				int i = 0;
+				foreach (string s in linie) //dla każdego elementu 
+				{
+					dane = linie[i].Split(",");
 
-
-
+					if (dane.Length == 5)
+						obiekty_stale.Add(new ObiektyStale(dane[0], dane[1], dane[2], dane[3], dane[4]));
+					else if (dane.Length == 6)
+						obiekty_stale.Add(new ObiektyStale(dane[0], dane[1], dane[2], dane[3], dane[4], dane[5]));
+					
+					i++;
+				}
+			}
+			catch (FileNotFoundException e)
+			{
+				Console.Write(e+": Nie znaleziono pliku!!");
+			}
 			//Funkcja powinna wczytywac z pliku do list obiekty_stale
 			//Jesli plik nie istnieje powinien byc zwrocony wyjatek.
 		}
