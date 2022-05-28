@@ -32,14 +32,34 @@ public class KontrolerRadaru
 
         void RysujStale(Graphics g)
         {
-            ekran.RysujDrzewo(new Point(100, 300), 8, g);
-            ekran.RysujNapis("Drzewo", Brushes.Red, new Point(100, 300), g);
-            ekran.RysujBlok(new Point(200, 400), new Point(40, 120), g);
-            ekran.RysujNapis("Blok", Brushes.Red, new Point(200, 400), g);
-            ekran.RysujWiezowiec(new Point(400, 200), 80, g);
-            ekran.RysujNapis("Wiezowiec", Brushes.Red, new Point(400, 200), g);
-            ekran.RysujKomin(new Point(500, 100), 14, g);
-            ekran.RysujNapis("Komin", Brushes.Blue, new Point(500, 100), g);
+            foreach (ObiektyStale os in symulator.obiekty_stale)
+            {
+                if(os is Drzewo d)
+                {
+                    Point pos = new Point((int)d.pozycja_srodka.x, (int)d.pozycja_srodka.y);
+                    ekran.RysujDrzewo(pos, (int)d.promien, g);
+                    ekran.RysujNapis(d.nazwa, Brushes.Black, pos, g);
+                }
+                else if(os is Komin k)
+                {
+                    Point pos = new Point((int)k.pozycja_srodka.x, (int)k.pozycja_srodka.y);
+                    ekran.RysujKomin(pos, (int)k.promien, g);
+                    ekran.RysujNapis(k.nazwa, Brushes.Black, pos, g);
+                }
+                else if (os is Blok b)
+                {
+                    Point pos = new Point((int)b.pozycja_srodka.x, (int)b.pozycja_srodka.y);
+                    Point rozm = new Point((int)b.dlugosc, (int)b.szerokosc);
+                    ekran.RysujBlok(pos, rozm, g);
+                    ekran.RysujNapis(b.nazwa, Brushes.Black, pos, g);
+                }
+                else if(os is Wiezowiec w)
+                {
+                    Point pos = new Point((int)w.pozycja_srodka.x, (int)w.pozycja_srodka.y);
+                    ekran.RysujWiezowiec(pos, (int)w.bok, g);
+                    ekran.RysujNapis(w.nazwa, Brushes.Black, pos, g);
+                }
+            }
         }
 
         void RysujRuchome(Graphics g)
@@ -59,7 +79,7 @@ public class KontrolerRadaru
     }
     public void WczytajMape()
     {
-        string sciezka = "Mapa.txt"; //sprawdzic czy sciezka jest poprawna
+        string sciezka = Path.Combine(Environment.CurrentDirectory.ToString(), @"..\..\..\..\Mapa.txt");
         symulator.wczytaj_z_pliku(sciezka);
 
     }

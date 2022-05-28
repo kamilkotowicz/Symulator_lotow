@@ -3,36 +3,56 @@ namespace Symulator_lotow
 {
 	public class Symulator
 	{
-		private List<ObiektyStale> obiekty_stale = new List<ObiektyStale>();
-		private List<ObiektyRuchome> statki_powietrzne = new List<ObiektyRuchome>();
+		internal List<ObiektyStale> obiekty_stale = new List<ObiektyStale>();
+		public List<ObiektyRuchome> statki_powietrzne = new List<ObiektyRuchome>();
 		private int maxx = 1000, maxy = 1000, maxz = 10000;
 		public Symulator()
 		{
 		}
-		public void wczytaj_z_pliku(string text)
+		public void wczytaj_z_pliku(string sciezka)
         {
-			/*try
+			obiekty_stale.Clear();
+			try
 			{
-				string lokalizacja = text; //lokalizacja pliku txt
-				string[] linie = File.ReadAllLines(lokalizacja); //wpisanie do każdego miejsca w tablicy po linii z pliku txt
+				string[] linie = File.ReadAllLines(sciezka);
 				string[] dane;
-				int i = 0;
-				foreach (string s in linie) //dla każdego elementu 
+				int id = 0;
+				foreach (string s in linie)
 				{
-					dane = linie[i].Split(",");
-
-					if (dane.Length == 5)
-						obiekty_stale.Add(new ObiektyStale(dane[0], dane[1], dane[2], dane[3], dane[4]));
-					else if (dane.Length == 6)
-						obiekty_stale.Add(new ObiektyStale(dane[0], dane[1], dane[2], dane[3], dane[4], dane[5]));
-					
-					i++;
+					dane = linie[id].Split(",");
+					int ile_danych = dane.Length;
+					string typ = dane[0];
+					int x = Convert.ToInt32(dane[1]);
+					int y = Convert.ToInt32(dane[2]);
+					int z = Convert.ToInt32(dane[ile_danych - 1]);
+					int r, a, b;
+					if (dane[0] == "D")
+					{
+						r = Convert.ToInt32(dane[3]);
+						obiekty_stale.Add(new Drzewo(new Punkt(x, y, z / 2), r, z, "Drzewo " + id.ToString()));
+					}
+					else if (dane[0] == "K")
+					{
+						r = Convert.ToInt32(dane[3]);
+						obiekty_stale.Add(new Komin(new Punkt(x, y, z / 2), r, z, "Komin " + id.ToString()));
+					}
+					else if (dane[0] == "W") { 
+						a = Convert.ToInt32(dane[3]);
+						obiekty_stale.Add(new Wiezowiec(new Punkt(x, y, z / 2), a, z, "Wiezowiec " + id.ToString()));
+					}
+					else if (dane[0] == "B")
+					{
+						a = Convert.ToInt32(dane[3]);
+						b = Convert.ToInt32(dane[4]);
+						obiekty_stale.Add(new Blok(new Punkt(x, y, z / 2), a, b, z, "Blok " + id.ToString()));
+					}					
+					++id;
 				}
 			}
 			catch (FileNotFoundException e)
 			{
 				Console.Write(e+": Nie znaleziono pliku!!");
-			}*/
+			}
 			//Funkcja powinna wczytywac z pliku do list obiekty_stale
 			//Jesli plik nie istnieje powinien byc zwrocony wyjatek.
 		}
@@ -100,7 +120,6 @@ namespace Symulator_lotow
         {
 			Random rand = new Random();
 			const int ILE_STATKOW = 10;
-			const int ILE_RODZAJOW = 5;
 			for(int i= 0; i < ILE_STATKOW; i++)
             {
 				ObiektyRuchome nowy_statek = StatekLosowegoTypu(i);

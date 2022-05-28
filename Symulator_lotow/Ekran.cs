@@ -104,7 +104,7 @@ namespace Symulator_lotow
         }
         public void RysujObiekt(Object o, Graphics g)
         {
-            int x=0, y=0, r=0, a=0, b=0;
+            int x=0, y=0, r;
             if(o is ObiektyStale os)
             {
                 x = Convert.ToInt32(os.pozycja_srodka.x);
@@ -117,12 +117,12 @@ namespace Symulator_lotow
             }
             if (o is Drzewo d)
             {
-                r = d.promien;
+                r = Convert.ToInt32(d.promien);
                 RysujDrzewo(new Point(x, y), r, g);
             }
             if(o is Komin k)
             {
-                r = k.promien;
+                r = Convert.ToInt32(k.promien);
                 RysujKomin(new Point(x, y), r, g);
             }
             if(o is Blok bl)

@@ -5,7 +5,6 @@ namespace Symulator_lotow
 
     class ObiektyStale
     {
-        protected int id;
         public double wysokosc;
         public Punkt pozycja_srodka;
         public string nazwa;
@@ -22,10 +21,10 @@ namespace Symulator_lotow
 
     class Drzewo : ObiektyStale
     {
-        public int promien = 0;
-        public Drzewo(Punkt srodek, double wysokosc, string nazwa) : base(srodek, wysokosc, nazwa)
+        public readonly double promien;
+        public Drzewo(Punkt srodek,double promien, double wysokosc, string nazwa) : base(srodek, wysokosc, nazwa)
         {
-
+            this.promien = promien;
         }
         public override bool CzyZawieraPunkt(Punkt p)
         {
@@ -36,10 +35,10 @@ namespace Symulator_lotow
     }
     class Komin : ObiektyStale
     {
-        public int promien = 0;
-        public Komin(Punkt srodek, double wysokosc, string nazwa) : base(srodek, wysokosc, nazwa)
+        public readonly double promien;
+        public Komin(Punkt srodek, double promien, double wysokosc, string nazwa) : base(srodek, wysokosc, nazwa)
         {
-
+            this.promien = promien;
         }
         public override bool CzyZawieraPunkt(Punkt p)
         {
@@ -51,11 +50,12 @@ namespace Symulator_lotow
 
     class Blok : ObiektyStale
     {
-        public int dlugosc = 0;
-        public int szerokosc = 0;
-        public Blok(Punkt srodek, double wysokosc, string nazwa) : base(srodek, wysokosc, nazwa)
+        public readonly double dlugosc;
+        public readonly double szerokosc;
+        public Blok(Punkt srodek, double dlugosc, double szerokosc, double wysokosc, string nazwa) : base(srodek, wysokosc, nazwa)
         {
-
+            this.dlugosc = dlugosc;
+            this.szerokosc = szerokosc;
         }
         public override bool CzyZawieraPunkt(Punkt p)
         {
@@ -70,10 +70,10 @@ namespace Symulator_lotow
 
     class Wiezowiec : ObiektyStale
     {
-        public int bok = 0;
-        public Wiezowiec(Punkt srodek, double wysokosc, string nazwa) : base(srodek, wysokosc, nazwa)
+        public readonly double bok;
+        public Wiezowiec(Punkt srodek, double bok, double wysokosc, string nazwa) : base(srodek, wysokosc, nazwa)
         {
-
+            this.bok = bok;
         }
         public override bool CzyZawieraPunkt(Punkt p)
         {
