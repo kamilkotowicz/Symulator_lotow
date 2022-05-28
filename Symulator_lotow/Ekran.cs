@@ -61,9 +61,9 @@ namespace Symulator_lotow
             Point[] wierzcholki = { p1, p2, p3 };
             RysujWielokat(wierzcholki, kolor, g);
         }
-        private void RysujLamana(Point[] points, Color kolor, Graphics g)
+        public void RysujLamana(Point[] points, Color kolor, Graphics g)
         {
-            Pen pen = new Pen(kolor, 3);//3 to grubosc linii
+            Pen pen = new Pen(kolor, 1);//1 to grubosc linii
             g.DrawLines(pen, points);
         }
 

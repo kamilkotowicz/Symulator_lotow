@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,21 +51,28 @@ namespace Symulator_lotow
             trasa = new Trasa(nowawysokosc, trasa.predkosc, trasa.punkt_docelowy);
         }
 
-        public Trasa UstawTraseLosowo(int maxx,int maxy)
+        public void UstawTraseLosowo(int maxx,int maxy)
         {
             Random rand = new Random();
             int predkosc = rand.Next(vmin, vmax);
             Punkt pozycja_celu = LosujPozycje(maxx, maxy);
-            return new Trasa(pozycja_celu.z, predkosc, pozycja_celu);
+            trasa =  new Trasa(pozycja_celu.z, predkosc, pozycja_celu);
         }
         public Punkt skladowe_predkosci()
         {
-            //Funkcja powinna zwracac skladowe predkosci w kierunkacj x,y,z
-            double vx = (trasa.punkt_docelowy.x - aktualna_pozycja.x) * trasa.predkosc / Math.Sqrt((trasa.punkt_docelowy.x - aktualna_pozycja.x) * (trasa.punkt_docelowy.x - aktualna_pozycja.x) + (trasa.punkt_docelowy.y - aktualna_pozycja.y) * (trasa.punkt_docelowy.y - aktualna_pozycja.y));
-            double vy = (trasa.punkt_docelowy.y - aktualna_pozycja.y) * trasa.predkosc / Math.Sqrt((trasa.punkt_docelowy.x - aktualna_pozycja.x) * (trasa.punkt_docelowy.x - aktualna_pozycja.x) + (trasa.punkt_docelowy.y - aktualna_pozycja.y) * (trasa.punkt_docelowy.y - aktualna_pozycja.y));
+            double licznik_x = (trasa.punkt_docelowy.x - aktualna_pozycja.x) * trasa.predkosc;
+            double licznik_y = (trasa.punkt_docelowy.y - aktualna_pozycja.y) * trasa.predkosc;
+            double mianownik = aktualna_pozycja.Odleglosc(trasa.punkt_docelowy);
+            const double EPSILON = 1e-6;
+            if(mianownik < EPSILON)
+            {
+                Debug.WriteLine("Dzielenie przez zero!");
+                return new Punkt(0, 0, 0);
+            }
+            double vx = licznik_x / mianownik;
+            double vy= licznik_y / mianownik;
             return new Punkt(vx, vy, 0);
         }
-
     }
 
     public class Dron : ObiektyRuchome
@@ -72,9 +80,9 @@ namespace Symulator_lotow
         public Dron(string nazwa) : base(nazwa)
         {
         }
-        public override int hmin { get => 0; } 
+        public override int hmin { get => 20; } 
         public override int hmax { get => 100; }
-        public override int vmin { get => 5; }
+        public override int vmin { get => 20; }
         public override int vmax { get => 100; }
     }
 
@@ -95,8 +103,8 @@ namespace Symulator_lotow
         {
         }
         public override int hmin { get => 50; }
-        public override int hmax { get => 7000; }
-        public override int vmin { get => 10; }
+        public override int hmax { get => 700; }
+        public override int vmin { get => 60; }
         public override int vmax { get => 300; }
     }
 
@@ -106,7 +114,7 @@ namespace Symulator_lotow
         {
         }
         public override int hmin { get => 50; }
-        public override int hmax { get => 2000; }
+        public override int hmax { get => 200; }
         public override int vmin { get => 20; }
         public override int vmax { get => 40; }
     }

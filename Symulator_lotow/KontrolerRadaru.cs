@@ -48,20 +48,15 @@ public class KontrolerRadaru
     }
     void RysujRuchome(Graphics g)
     {
-        /*ekran.RysujSamolot(new Point(300, 100), g);
-        ekran.RysujNapis("Samolot", Brushes.Red, new Point(300, 100), g);
-        ekran.RysujDron(new Point(700, 100), g);
-        ekran.RysujNapis("Dron", Brushes.Red, new Point(700, 100), g);
-        ekran.RysujSmiglowiec(new Point(700, 200), g);
-        ekran.RysujNapis("Śmigłowiec", Brushes.Red, new Point(700, 200), g);
-        ekran.RysujBalon(new Point(700, 300), g);
-        ekran.RysujNapis("Balon", Brushes.Red, new Point(700, 300), g);
-        ekran.RysujSzybowiec(new Point(800, 300), g);
-        ekran.RysujNapis("Szybowiec", Brushes.Red, new Point(800, 300), g);*/
         foreach (ObiektyRuchome sp in symulator.statki_powietrzne)
         {
             Point pos = new Point((int)sp.aktualna_pozycja.x, (int)sp.aktualna_pozycja.y);
-            ekran.RysujNapis(sp.nazwa, Brushes.Black,pos, g);
+            string opis = sp.nazwa + "\nWysokosc " + sp.aktualna_pozycja.z + "\nPredkosc " + sp.trasa.predkosc;
+            ekran.RysujNapis(opis, Brushes.Black,pos, g);
+            Point[] points =new Point[2];
+            points[0] = pos;
+            points[1] = new Point((int)sp.trasa.punkt_docelowy.x, (int)sp.trasa.punkt_docelowy.y);
+            ekran.RysujLamana(points, Color.Black, g);
             if (sp is Dron) ekran.RysujDron(pos, g);
             else if (sp is Samolot) ekran.RysujSamolot(pos, g);
             else if (sp is Balon) ekran.RysujBalon(pos, g);
@@ -86,7 +81,7 @@ public class KontrolerRadaru
     }
     private void SymulujRuch(Object myObject, EventArgs e)
     {
-        double krok = 1;//trzeba pzetestowac jaka tu dac wartosc
+        double krok = 0.01;//trzeba pzetestowac jaka tu dac wartosc
         symulator.SymulujRuch(krok);
         symulator.WykryjKolizje();//tutaj trzeba dodac jeszcze obsluge kolizji
         mainForm.Redraw();
@@ -94,10 +89,10 @@ public class KontrolerRadaru
     public void UruchomSymulacje()
     {
         WczytajMape();
-        //symulator.GenerujStatkiPowietrzne(); na razie jest jakis blad
+        symulator.GenerujStatkiPowietrzne();
         System.Windows.Forms.Timer t1 = new System.Windows.Forms.Timer();
         t1.Tick += new EventHandler(SymulujRuch);
-        t1.Interval = 200;
+        t1.Interval = 100;
         t1.Start();
     }
 

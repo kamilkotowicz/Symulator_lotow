@@ -10,6 +10,12 @@
             y = yy;
             z = zz;
         }
+        public Punkt(Punkt p)
+        {
+            this.x = p.x;
+            this.y = p.y;
+            this.z = p.z;
+        }
         public double Odleglosc(Punkt p)
         {
             double dx=x-p.x;

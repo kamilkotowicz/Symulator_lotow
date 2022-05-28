@@ -96,19 +96,19 @@ namespace Symulator_lotow
 			switch (rodzaj)
 			{
 				case 0:
-					statek = new Dron("Dron" + id.ToString());
+					statek = new Dron("Dron " + id.ToString());
 					break;
 				case 1:
-					statek = new Samolot("Samolot" + id.ToString());
+					statek = new Samolot("Samolot " + id.ToString());
 					break;
 				case 2:
-					statek = new Smiglowiec("Smiglowiec" + id.ToString());
+					statek = new Smiglowiec("Smiglowiec " + id.ToString());
 					break;
 				case 3:
-					statek = new Balon("Balon" + id.ToString());
+					statek = new Balon("Balon " + id.ToString());
 					break;
 				default:
-					statek = new Szybowiec("Szybowiec" + id.ToString());
+					statek = new Szybowiec("Szybowiec " + id.ToString());
 					break;
 			}
 			return statek;
@@ -131,6 +131,7 @@ namespace Symulator_lotow
 					nowy_statek.UstawTraseLosowo(maxx, maxy);
 				}
 				while (CzyZajete(nowy_statek.trasa.punkt_docelowy));
+				nowy_statek.aktualna_pozycja.z = nowy_statek.trasa.wysokosc;
 				statki_powietrzne.Add(nowy_statek);
 			}
         }
@@ -141,6 +142,12 @@ namespace Symulator_lotow
 				Punkt v = sp.skladowe_predkosci();
 				sp.aktualna_pozycja.x += krok * v.x;
 				sp.aktualna_pozycja.y += krok * v.y;
+				Punkt v2 = sp.skladowe_predkosci();
+                if ((v.x * v2.x < 0) || (v.y * v2.y < 0)) // gdy samolot doleci do konca odcinka zmienia swoja predkosc na przeciwna
+                {
+					sp.aktualna_pozycja = new Punkt(sp.trasa.punkt_docelowy);
+					sp.trasa.predkosc = 0;
+                }
 			}
 		}
 
