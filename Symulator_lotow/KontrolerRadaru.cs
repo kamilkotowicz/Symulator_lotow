@@ -59,7 +59,7 @@ public class KontrolerRadaru
     }
     public void WczytajMape()
     {
-        string sciezka = "nazwa_pliku.txt"; //zmieniec nazwe pliku na wlasciwa
+        string sciezka = "Mapa.txt"; //sprawdzic czy sciezka jest poprawna
         symulator.wczytaj_z_pliku(sciezka);
 
     }

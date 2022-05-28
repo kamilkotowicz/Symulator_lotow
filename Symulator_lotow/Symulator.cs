@@ -69,6 +69,33 @@ namespace Symulator_lotow
 
 		}
 
+		private ObiektyRuchome StatekLosowegoTypu(int id)
+        {
+			const int ILE_RODZAJOW = 5;
+			Random rand = new Random();
+			int rodzaj = rand.Next(0, ILE_RODZAJOW);
+			ObiektyRuchome statek;
+			switch (rodzaj)
+			{
+				case 0:
+					statek = new Dron("Dron" + id.ToString());
+					break;
+				case 1:
+					statek = new Samolot("Samolot" + id.ToString());
+					break;
+				case 2:
+					statek = new Smiglowiec("Smiglowiec" + id.ToString());
+					break;
+				case 3:
+					statek = new Balon("Balon" + id.ToString());
+					break;
+				default:
+					statek = new Szybowiec("Szybowiec" + id.ToString());
+					break;
+			}
+			return statek;
+		}
+
 		public void GenerujStatkiPowietrzne()
         {
 			Random rand = new Random();
@@ -76,28 +103,7 @@ namespace Symulator_lotow
 			const int ILE_RODZAJOW = 5;
 			for(int i= 0; i < ILE_STATKOW; i++)
             {
-				ObiektyRuchome nowy_statek;
-				Punkt poczatkowa_pozycja;
-				Trasa wylosowana_trasa;
-				int rodzaj = rand.Next(0, ILE_RODZAJOW);
-				switch (rodzaj)
-				{
-					case 0:
-						nowy_statek = new Dron("Dron"+i.ToString());
-						break;
-					case 1:
-						nowy_statek = new Samolot("Samolot" + i.ToString());
-						break;
-					case 2:
-						nowy_statek = new Smiglowiec("Smiglowiec" + i.ToString());
-						break;
-					case 3:
-						nowy_statek = new Balon("Balon" + i.ToString());
-						break;
-					default:
-						nowy_statek = new Szybowiec("Szybowiec" + i.ToString());
-						break;
-				}
+				ObiektyRuchome nowy_statek = StatekLosowegoTypu(i);
 				do
 				{
 					nowy_statek.UstawNaLosowaPozycje(maxx, maxy);
@@ -133,42 +139,7 @@ namespace Symulator_lotow
             }
 			foreach (ObiektyStale os in obiekty_stale)
 			{
-				if(os is Drzewo d)
-                {
-                    if (p.Odleglosc(os.pozycja_srodka) <= d.promien)
-                    {
-						return true;
-                    }
-				}
-				if(os is Komin k)
-                {
-                    if (p.Odleglosc(os.pozycja_srodka) <= k.promien)
-                    {
-						return true;
-                    }
-                }
-				if(os is Blok b)
-                {
-					double minx = os.pozycja_srodka.x - b.dlugosc;
-					double maxx = os.pozycja_srodka.x + b.dlugosc;
-					double miny = os.pozycja_srodka.y - b.szerokosc;
-					double maxy = os.pozycja_srodka.y + b.szerokosc;
-					if(minx<= p.x && miny<= p.y && p.x<=maxx && p.y<=maxy && p.z <= os.wysokosc)
-                    {
-						return true;
-                    }
-                }
-				if(os is Wiezowiec w)
-                {
-					double minx = os.pozycja_srodka.x - w.bok;
-					double maxx = os.pozycja_srodka.x + w.bok;
-					double miny = os.pozycja_srodka.y - w.bok;
-					double maxy = os.pozycja_srodka.y + w.bok;
-					if (minx <= p.x && miny <= p.y && p.x <= maxx && p.y <= maxy && p.z <= os.wysokosc)
-					{
-						return true;
-					}
-				}
+				if(os.CzyZawieraPunkt(p)) return true;
 			}
 			return false;
 		}

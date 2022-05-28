@@ -17,6 +17,14 @@ namespace Symulator_lotow
         public virtual int hmax { get; }
         public virtual int vmin { get; }
         public virtual int vmax { get; }
+        public bool CzyZawieraPunkt(Punkt p)
+        {
+            if (p.Odleglosc(aktualna_pozycja) <= rozmiar)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public ObiektyRuchome(string nazwa)
         {
