@@ -2,12 +2,12 @@
 {
     public class Trasa
     {
-        public int wysokosc;
-        public int predkosc;
+        public double wysokosc;
+        public double predkosc;
         public Punkt punkt_docelowy;
         private Punkt kierunek;
 
-        public Trasa(int wysokosc, int predkosc, Punkt punkt_docelowy)
+        public Trasa(double wysokosc, double predkosc, Punkt punkt_docelowy)
         {
             this.wysokosc = wysokosc;
             this.predkosc = predkosc;

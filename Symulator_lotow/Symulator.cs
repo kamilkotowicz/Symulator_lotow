@@ -11,7 +11,7 @@ namespace Symulator_lotow
 		}
 		public void wczytaj_z_pliku(string text)
         {
-			try
+			/*try
 			{
 				string lokalizacja = text; //lokalizacja pliku txt
 				string[] linie = File.ReadAllLines(lokalizacja); //wpisanie do każdego miejsca w tablicy po linii z pliku txt
@@ -32,7 +32,7 @@ namespace Symulator_lotow
 			catch (FileNotFoundException e)
 			{
 				Console.Write(e+": Nie znaleziono pliku!!");
-			}
+			}*/
 			//Funkcja powinna wczytywac z pliku do list obiekty_stale
 			//Jesli plik nie istnieje powinien byc zwrocony wyjatek.
 		}
@@ -77,40 +77,38 @@ namespace Symulator_lotow
 			for(int i= 0; i < ILE_STATKOW; i++)
             {
 				ObiektyRuchome nowy_statek;
+				Punkt poczatkowa_pozycja;
+				Trasa wylosowana_trasa;
 				int rodzaj = rand.Next(0, ILE_RODZAJOW);
-                switch (rodzaj)
-                {
+				switch (rodzaj)
+				{
 					case 0:
-						nowy_statek = new Dron();
+						nowy_statek = new Dron("Dron"+i.ToString());
 						break;
 					case 1:
-						nowy_statek = new Samolot();
+						nowy_statek = new Samolot("Samolot" + i.ToString());
 						break;
 					case 2:
-						nowy_statek = new Smiglowiec();
+						nowy_statek = new Smiglowiec("Smiglowiec" + i.ToString());
 						break;
 					case 3:
-						nowy_statek = new Balon();
+						nowy_statek = new Balon("Balon" + i.ToString());
 						break;
 					default:
-						nowy_statek = new Szybowiec();
+						nowy_statek = new Szybowiec("Szybowiec" + i.ToString());
 						break;
-                }
+				}
 				do
 				{
-					int losowy_x = rand.Next(0, maxx);
-					int losowy_y = rand.Next(0, maxy);
-					int losowy_z = rand.Next(nowy_statek.hmin, nowy_statek.hmax);
-					nowy_statek.aktualna_pozycja = new Punkt(losowy_x, losowy_y, losowy_z);
+					nowy_statek.UstawNaLosowaPozycje(maxx, maxy);
 				}
 				while (CzyZajete(nowy_statek.aktualna_pozycja));
-
 				do
 				{
-					nowy_statek.trasa = nowy_statek.generuj_trase_losowo();
+					nowy_statek.UstawTraseLosowo(maxx, maxy);
 				}
 				while (CzyZajete(nowy_statek.trasa.punkt_docelowy));
-				
+				statki_powietrzne.Add(nowy_statek);
 			}
         }
 		public void SymulujRuch(double krok) // trzeba przetestowac jaka wartosc krok bedzie sensowna

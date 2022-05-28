@@ -9,7 +9,6 @@ namespace Symulator_lotow
 
     public class ObiektyRuchome
     {
-        protected int id;
         public Punkt aktualna_pozycja;
         public Trasa trasa;
         public readonly int rozmiar = 1;// rozmiar statku powietrznego bedzie potrzebny przy wykrywaniu kolizji
@@ -19,6 +18,22 @@ namespace Symulator_lotow
         public virtual int vmin { get; }
         public virtual int vmax { get; }
 
+        public ObiektyRuchome(string nazwa)
+        {
+            this.nazwa = nazwa;
+        }
+        private Punkt LosujPozycje(int maxx, int maxy)
+        {
+            Random rand = new Random();
+            int x = rand.Next(0, maxx);
+            int y = rand.Next(0, maxy);
+            int z = rand.Next(hmin, hmax);
+            return new Punkt(x, y, z);
+        }
+        public void UstawNaLosowaPozycje(int maxx, int maxy)
+        {
+            aktualna_pozycja = LosujPozycje(maxx, maxy);
+        }
 
         public void zmien_trase_recznie(Trasa t1)
         {
@@ -27,14 +42,12 @@ namespace Symulator_lotow
             trasa = new Trasa(nowawysokosc, trasa.predkosc, trasa.punkt_docelowy);
         }
 
-        public Trasa generuj_trase_losowo()
+        public Trasa UstawTraseLosowo(int maxx,int maxy)
         {
-            Random generator = new Random(0);
-            int wysokosc = generator.Next(hmin, hmax+1);
-            int predkosc = generator.Next(vmin, vmax+1);
-            int x = generator.Next(0, 1000);
-            int y = generator.Next(0, 1000);
-            return new Trasa(wysokosc, predkosc, new Punkt(x,y,wysokosc));
+            Random rand = new Random();
+            int predkosc = rand.Next(vmin, vmax);
+            Punkt pozycja_celu = LosujPozycje(maxx, maxy);
+            return new Trasa(pozycja_celu.z, predkosc, pozycja_celu);
         }
         public Punkt skladowe_predkosci()
         {
@@ -48,6 +61,9 @@ namespace Symulator_lotow
 
     public class Dron : ObiektyRuchome
     {
+        public Dron(string nazwa) : base(nazwa)
+        {
+        }
         public override int hmin { get => 0; } 
         public override int hmax { get => 100; }
         public override int vmin { get => 5; }
@@ -56,6 +72,9 @@ namespace Symulator_lotow
 
     public class Samolot : ObiektyRuchome
     {
+        public Samolot(string nazwa) : base(nazwa)
+        {
+        }
         public override int hmin { get => 5000; }
         public override int hmax { get => 11000; }
         public override int vmin { get => 200; }
@@ -64,6 +83,9 @@ namespace Symulator_lotow
 
     public class Smiglowiec : ObiektyRuchome
     {
+        public Smiglowiec(string nazwa) : base(nazwa)
+        {
+        }
         public override int hmin { get => 50; }
         public override int hmax { get => 7000; }
         public override int vmin { get => 10; }
@@ -72,6 +94,9 @@ namespace Symulator_lotow
 
     public class Balon : ObiektyRuchome
     {
+        public Balon(string nazwa) : base(nazwa)
+        {
+        }
         public override int hmin { get => 50; }
         public override int hmax { get => 2000; }
         public override int vmin { get => 20; }
@@ -80,6 +105,9 @@ namespace Symulator_lotow
 
     public class Szybowiec : ObiektyRuchome
     {
+        public Szybowiec(string nazwa) : base(nazwa)
+        {
+        }
         public override int hmin { get => 200; }
         public override int hmax { get => 600; }
         public override int vmin { get => 100; }
