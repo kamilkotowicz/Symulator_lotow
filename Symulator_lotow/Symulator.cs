@@ -4,12 +4,12 @@ namespace Symulator_lotow
 	public class Symulator
 	{
 		internal List<ObiektyStale> obiekty_stale = new List<ObiektyStale>();
-		public List<ObiektyRuchome> statki_powietrzne = new List<ObiektyRuchome>();
+		internal List<ObiektyRuchome> statki_powietrzne = new List<ObiektyRuchome>();
 		private int maxx = 1000, maxy = 1000, maxz = 10000;
 		public Symulator()
 		{
 		}
-		public void wczytaj_z_pliku(string sciezka)
+		public void WczytajPlik(string sciezka)
         {
 			obiekty_stale.Clear();
 			try
@@ -53,8 +53,6 @@ namespace Symulator_lotow
 			{
 				Console.Write(e+": Nie znaleziono pliku!!");
 			}
-			//Funkcja powinna wczytywac z pliku do list obiekty_stale
-			//Jesli plik nie istnieje powinien byc zwrocony wyjatek.
 		}
 
 		public void WykryjKolizje()
