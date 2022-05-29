@@ -11,11 +11,17 @@
     }
     public class Kolizja : Zdarzenie
     {
-        public Kolizja(SymulowanyObiekt a, SymulowanyObiekt b) : base(a, b) { }
+        public double odleglosc;
+        public Kolizja(SymulowanyObiekt a, SymulowanyObiekt b, double odleglosc) : base(a, b) { 
+            this.odleglosc = odleglosc;
+        }
     }
 
     public class NiebezpieczneZblizenie : Zdarzenie
     {
-        public NiebezpieczneZblizenie(SymulowanyObiekt a, SymulowanyObiekt b) : base(a, b) { }
+        public double odleglosc;
+        public NiebezpieczneZblizenie(SymulowanyObiekt a, SymulowanyObiekt b, double odleglosc) : base(a, b) {
+            this.odleglosc = odleglosc;
+        }
     }
 }

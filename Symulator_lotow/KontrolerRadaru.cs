@@ -85,38 +85,66 @@ public class KontrolerRadaru
     {
         symulator.SymulujRuch(KROK_SYMULACJI);
         symulator.WykryjKolizje();//tutaj trzeba dodac jeszcze obsluge kolizji
-        ZareagujNaZdarzenia(symulator.wykryte_zdarzenia);
+        ZareagujNaZdarzenia(symulator.wykryte_zblizenia, symulator.wykryte_kolizje);
         mainForm.Redraw();
     }
     bool can_send_message = true;
-    private void ZareagujNaZdarzenia(List<Zdarzenie> wykryte_zdarzenia)
+    private void ZareagujNaKolizje(List<Kolizja> wykryte_kolizje)
     {
-        if (wykryte_zdarzenia.Count == 0)
+        /*foreach (Kolizja kolizja in wykryte_kolizje)
+        {
+            string message = "Kolizja miedzy " + kolizja.a.nazwa + " a " + kolizja.b.nazwa + "\nOdleglosc " + kolizja.odleglosc;
+            if (can_send_message)
+            {
+                can_send_message = false;
+                KROK_SYMULACJI = 0;
+                DialogResult res = MessageBox.Show(message, "Kolizja", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (res == DialogResult.OK)
+                {
+                    can_send_message = true;
+                    KROK_SYMULACJI = 0.25; // zwiekszam szybkosc symulacji, aby pozbyc sie wielokrotnie wyskakujacych okienek do tego samego zblizenia
+                }
+            }
+        }*/
+    }
+    private void ZareagujNaZblizenia(List<NiebezpieczneZblizenie> wykryte_zblizenia)
+    {
+        //Blad jesli wylosowane koncowe punkty trasy dla 2 samolotow sa bliskie siebie to okienko bedzie wyskakiwac w nieskonczonosc
+        if (wykryte_zblizenia.Count == 0)
         {
             KROK_SYMULACJI = 0.05;
             return;
         }
-        Zdarzenie zdarzenie = wykryte_zdarzenia[0];
-        string message="";
-        if(zdarzenie is Kolizja k)
+        if(wykryte_zblizenia.Count > 1)
         {
-            message = "Kolizja miedzy " + k.a.nazwa + " a " + k.b.nazwa;
-        }
-        else if(zdarzenie is NiebezpieczneZblizenie z)
+            wykryte_zblizenia.Sort((a, b) => a.odleglosc.CompareTo(b.odleglosc)); //zblizenia z mniejsza odlegloscia powinny byc obsluzone przez kontrolera jako pierwsze
+        }     
+        foreach (NiebezpieczneZblizenie zblizenie in wykryte_zblizenia)
         {
-            message = "Zblizenie miedzy " + z.a.nazwa + " a " + z.b.nazwa;
-        }
-        if (can_send_message)
-        {
-            can_send_message = false;
-            KROK_SYMULACJI = 0;
-            DialogResult res = MessageBox.Show(message,"Niebezpieczenstwo", MessageBoxButtons.OK,MessageBoxIcon.Warning);
-            if (res == DialogResult.OK)
+            // jesli zaden z obiektow nie jest samolotem ktory juz skonczyl lot (bardzo brzydki kod!)
+            if(!( ((zblizenie.a is ObiektyRuchome sp) && (sp.czy_skonczyl_lot==true)) || ((zblizenie.b is ObiektyRuchome sp2) && (sp2.czy_skonczyl_lot == true))))
             {
-                 can_send_message = true;
-                 KROK_SYMULACJI = 0.25; // zwiekszam szybkosc symulacji, aby pozbyc sie wielokrotnie wyskakujacych okienek do tego samego zblizenia
+                string message = "Zblizenie miedzy " + zblizenie.a.nazwa + " a " + zblizenie.b.nazwa + "\nOdleglosc " + zblizenie.odleglosc;
+                if (can_send_message)
+                {
+                    can_send_message = false;
+                    KROK_SYMULACJI = 0;
+                    DialogResult res = MessageBox.Show(message, "Niebezpieczenstwo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (res == DialogResult.OK)
+                    {
+                        can_send_message = true;
+                        KROK_SYMULACJI = 0.25; // zwiekszam szybkosc symulacji, aby pozbyc sie wielokrotnie wyskakujacych okienek do tego samego zblizenia
+                    }
+                }
+                break;
             }
+
         }
+    }
+    private void ZareagujNaZdarzenia(List<NiebezpieczneZblizenie> wykryte_zblizenia, List<Kolizja> wykryte_kolizje)
+    {
+        ZareagujNaKolizje(wykryte_kolizje);
+        ZareagujNaZblizenia(wykryte_zblizenia);
     }
 
     public void UruchomSymulacje()

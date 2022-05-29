@@ -12,6 +12,7 @@ namespace Symulator_lotow
     {
         public Punkt aktualna_pozycja;
         public Trasa trasa;
+        public bool czy_skonczyl_lot = false;
         public readonly int rozmiar = 1;// rozmiar statku powietrznego bedzie potrzebny przy wykrywaniu kolizji
         //public string nazwa;
         public virtual int hmin { get; }

@@ -7,8 +7,9 @@ namespace Symulator_lotow
 	{
 		internal List<ObiektyStale> obiekty_stale = new List<ObiektyStale>();
 		internal List<ObiektyRuchome> statki_powietrzne = new List<ObiektyRuchome>();
-		public List<Zdarzenie> wykryte_zdarzenia = new List<Zdarzenie>(); 
-		private int maxx = 1000, maxy = 1000;
+		public List<NiebezpieczneZblizenie> wykryte_zblizenia = new List<NiebezpieczneZblizenie>();
+		public List<Kolizja> wykryte_kolizje = new List<Kolizja>();
+		private const int MAXX = 1000, MAXY = 1000;
 		public Symulator()
 		{
 		}
@@ -62,22 +63,22 @@ namespace Symulator_lotow
         {
 			const double ODLEGLOSC_KOLIZJI = 25;
 			const double ODLEGLOSC_NIEBEZPIECZNA = 100;
-			wykryte_zdarzenia.Clear();
-			foreach (ObiektyRuchome sp in statki_powietrzne)
+			wykryte_zblizenia.Clear();
+			wykryte_kolizje.Clear();
+			for(int i=0;i<statki_powietrzne.Count;++i) //uzycie petli for zamiast foreach w celu wydajnosciowym - aby nie dodawac 2 razy tej samej kolizji
 			{
-				foreach (ObiektyRuchome sp2 in statki_powietrzne)
-				{
-					if (sp2 != sp)
-					{
-						double odleglosc = sp.aktualna_pozycja.Odleglosc(sp2.aktualna_pozycja);
-						if (odleglosc < ODLEGLOSC_KOLIZJI)
-                        {
-							wykryte_zdarzenia.Add(new Kolizja(sp, sp2));
-						}
-						else if(odleglosc < ODLEGLOSC_NIEBEZPIECZNA)
-                        {
-							wykryte_zdarzenia.Add(new NiebezpieczneZblizenie(sp, sp2));
-						}
+				ObiektyRuchome sp = statki_powietrzne[i];
+				for(int j=i+1;j<statki_powietrzne.Count;++j)
+				{	
+					ObiektyRuchome sp2 = statki_powietrzne[j];
+					double odleglosc = sp.aktualna_pozycja.Odleglosc(sp2.aktualna_pozycja);
+					if (odleglosc < ODLEGLOSC_KOLIZJI)
+                    {
+						wykryte_kolizje.Add(new Kolizja(sp, sp2, odleglosc));
+					}
+					else if(odleglosc < ODLEGLOSC_NIEBEZPIECZNA)
+                    {
+						wykryte_zblizenia.Add(new NiebezpieczneZblizenie(sp, sp2, odleglosc));
 					}
 				}
 			}
@@ -122,12 +123,12 @@ namespace Symulator_lotow
 				ObiektyRuchome nowy_statek = StatekLosowegoTypu(i);
 				do
 				{
-					nowy_statek.UstawNaLosowaPozycje(maxx, maxy);
+					nowy_statek.UstawNaLosowaPozycje(MAXX, MAXY);
 				}
 				while (CzyZajete(nowy_statek.aktualna_pozycja));
 				do
 				{
-					nowy_statek.UstawTraseLosowo(maxx, maxy);
+					nowy_statek.UstawTraseLosowo(MAXX, MAXY);
 				}
 				while (CzyZajete(nowy_statek.trasa.KoniecAktualnegoOdcinka()));
 				nowy_statek.aktualna_pozycja.z = nowy_statek.trasa.KoniecAktualnegoOdcinka().z;
@@ -154,6 +155,7 @@ namespace Symulator_lotow
                     else
                     {
 						sp.aktualna_pozycja.z = 0;
+						sp.czy_skonczyl_lot = true;
                     }
 				}
 			}

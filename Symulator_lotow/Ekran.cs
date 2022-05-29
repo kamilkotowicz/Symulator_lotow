@@ -98,7 +98,7 @@ namespace Symulator_lotow
             RysujObiektLatajacy(pos_srodka, Color.Red, 8, g);
         }
 
-        public void RysujNiebezpieczenstwo(Point pos, Graphics g)
+        public void RysujKolizje(Point pos, Graphics g)
         {
             RysujNapis("BUM!", Brushes.Red, pos, g);
         }
