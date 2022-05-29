@@ -44,29 +44,32 @@ namespace Symulator_lotow
             aktualna_pozycja = LosujPozycje(maxx, maxy);
         }
 
-        public void zmien_trase_recznie(Trasa t1)
-        {
-            //jesli "wykryto kolizje"
-            int nowawysokosc = int.Parse(Console.ReadLine());
-            trasa = new Trasa(nowawysokosc, trasa.predkosc, trasa.punkt_docelowy);
+        public void zmien_trase_recznie(Trasa t, double predkosc, Punkt nowy_koniec_odcinka) //wykonujemy ta funkcje jesli "wykryto kolizje"
+        {        
+            t.odcinki[t.nr_aktualnego_odcinka] = new OdcinekTrasy(predkosc, nowy_koniec_odcinka);
         }
 
         public void UstawTraseLosowo(int maxx,int maxy)
         {
             Random rand = new Random();
-            int predkosc = rand.Next(vmin, vmax);
-            Punkt pozycja_celu = LosujPozycje(maxx, maxy);
-            trasa =  new Trasa(pozycja_celu.z, predkosc, pozycja_celu);
+            int LICZBA_ODCINKOW = rand.Next(2, 4);
+            trasa = new Trasa();
+            for(int i=0;i<LICZBA_ODCINKOW; i++)
+            {
+                int predkosc = rand.Next(vmin, vmax);
+                Punkt koniec_odcinka = LosujPozycje(maxx, maxy);
+                OdcinekTrasy odc = new OdcinekTrasy(predkosc, koniec_odcinka);
+                trasa.odcinki.Add(odc);
+            }
         }
         public Punkt skladowe_predkosci()
         {
-            double licznik_x = (trasa.punkt_docelowy.x - aktualna_pozycja.x) * trasa.predkosc;
-            double licznik_y = (trasa.punkt_docelowy.y - aktualna_pozycja.y) * trasa.predkosc;
-            double mianownik = aktualna_pozycja.Odleglosc(trasa.punkt_docelowy);
+            double licznik_x = (trasa.KoniecAktualnegoOdcinka().x - aktualna_pozycja.x) * trasa.PredkoscAktualnegoOdcinka();
+            double licznik_y = (trasa.KoniecAktualnegoOdcinka().y - aktualna_pozycja.y) * trasa.PredkoscAktualnegoOdcinka();
+            double mianownik = aktualna_pozycja.Odleglosc(trasa.KoniecAktualnegoOdcinka());
             const double EPSILON = 1e-6;
-            if(mianownik < EPSILON)
+            if(mianownik < EPSILON) //dzielenie przez zero, wystepuje gdy samolot jest juz w punkcie docelowym
             {
-                Debug.WriteLine("Dzielenie przez zero!");
                 return new Punkt(0, 0, 0);
             }
             double vx = licznik_x / mianownik;

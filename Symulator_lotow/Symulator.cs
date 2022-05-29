@@ -117,7 +117,7 @@ namespace Symulator_lotow
 		public void GenerujStatkiPowietrzne()
         {
 			Random rand = new Random();
-			const int ILE_STATKOW = 10;
+			const int ILE_STATKOW = 8;
 			for(int i= 0; i < ILE_STATKOW; i++)
             {
 				ObiektyRuchome nowy_statek = StatekLosowegoTypu(i);
@@ -130,8 +130,8 @@ namespace Symulator_lotow
 				{
 					nowy_statek.UstawTraseLosowo(maxx, maxy);
 				}
-				while (CzyZajete(nowy_statek.trasa.punkt_docelowy));
-				nowy_statek.aktualna_pozycja.z = nowy_statek.trasa.wysokosc;
+				while (CzyZajete(nowy_statek.trasa.KoniecAktualnegoOdcinka()));
+				nowy_statek.aktualna_pozycja.z = nowy_statek.trasa.KoniecAktualnegoOdcinka().z;
 				statki_powietrzne.Add(nowy_statek);
 			}
         }
@@ -143,11 +143,12 @@ namespace Symulator_lotow
 				sp.aktualna_pozycja.x += krok * v.x;
 				sp.aktualna_pozycja.y += krok * v.y;
 				Punkt v2 = sp.skladowe_predkosci();
-                if ((v.x * v2.x < 0) || (v.y * v2.y < 0)) // gdy samolot doleci do konca odcinka zmienia swoja predkosc na przeciwna
+                if ((v.x * v2.x < 0) || (v.y * v2.y < 0)) // gdy samolot doleci do konca odcinka zmienilby swoja predkosc na przeciwna
                 {
-					sp.aktualna_pozycja = new Punkt(sp.trasa.punkt_docelowy);
-					sp.trasa.predkosc = 0;
-                }
+					sp.aktualna_pozycja = new Punkt(sp.trasa.KoniecAktualnegoOdcinka());
+					++sp.trasa.nr_aktualnego_odcinka;
+					sp.aktualna_pozycja.z = sp.trasa.KoniecAktualnegoOdcinka().z;
+				}
 			}
 		}
 

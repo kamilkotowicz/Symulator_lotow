@@ -46,11 +46,20 @@ public class KontrolerRadaru
         foreach (ObiektyRuchome sp in symulator.statki_powietrzne)
         {
             Point pos = new Point((int)sp.aktualna_pozycja.x, (int)sp.aktualna_pozycja.y);
-            string opis = sp.nazwa + "\nWysokosc " + sp.aktualna_pozycja.z + "\nPredkosc " + sp.trasa.predkosc;
-            Point[] points =new Point[2];
-            points[0] = pos;
-            points[1] = new Point((int)sp.trasa.punkt_docelowy.x, (int)sp.trasa.punkt_docelowy.y);
-            ekran.RysujLamana(points, Color.Black, g);
+            string opis = sp.nazwa + "\nWysokosc " + sp.aktualna_pozycja.z + "\nPredkosc " + sp.trasa.PredkoscAktualnegoOdcinka();
+            int ile_odcinkow = sp.trasa.odcinki.Count();
+            int nr_odcinka = sp.trasa.nr_aktualnego_odcinka;
+            if(nr_odcinka < ile_odcinkow)
+            {
+                Point[] points = new Point[ile_odcinkow - nr_odcinka + 1];
+                points[0] = pos;
+                for (int i = nr_odcinka; i < ile_odcinkow; i++)
+                {
+                    Punkt koniec_odcinka = sp.trasa.odcinki[i].koniec_odcinka;
+                    points[i + 1 - nr_odcinka] = new Point((int)koniec_odcinka.x, (int)koniec_odcinka.y);
+                }
+                ekran.RysujLamana(points, Color.Black, g);
+            }
             if (sp is Dron) ekran.RysujDron(pos, g);
             else if (sp is Samolot) ekran.RysujSamolot(pos, g);
             else if (sp is Balon) ekran.RysujBalon(pos, g);
@@ -76,7 +85,7 @@ public class KontrolerRadaru
     }
     private void SymulujRuch(Object myObject, EventArgs e)
     {
-        double krok = 0.01;//trzeba pzetestowac jaka tu dac wartosc
+        double krok = 0.02;//trzeba pzetestowac jaka tu dac wartosc
         symulator.SymulujRuch(krok);
         symulator.WykryjKolizje();//tutaj trzeba dodac jeszcze obsluge kolizji
         mainForm.Redraw();
