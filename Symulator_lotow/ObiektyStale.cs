@@ -3,20 +3,19 @@
 namespace Symulator_lotow
 {
 
-    class ObiektyStale
+    abstract class ObiektyStale : SymulowanyObiekt
     {
         public double wysokosc;
         public Punkt pozycja_srodka;
-        public string nazwa;
+        //public string nazwa;
         public ObiektyStale(Punkt srodek, double wysokosc, string nazwa)
         {
             this.wysokosc = wysokosc;
             this.pozycja_srodka = srodek;
             this.nazwa = nazwa;
         }
-        public virtual bool CzyZawieraPunkt(Punkt p) {
-            return true;
-        }
+        public override abstract bool CzyZawieraPunkt(Punkt p);
+
     }
 
     class Drzewo : ObiektyStale

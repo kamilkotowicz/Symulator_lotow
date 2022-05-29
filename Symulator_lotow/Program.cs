@@ -17,8 +17,6 @@ namespace Symulator_lotow
             KontrolerRadaru kontroler = new KontrolerRadaru(mainForm);            
             kontroler.UruchomSymulacje();
             Application.Run(mainForm);
-
-
         }
     }
 }

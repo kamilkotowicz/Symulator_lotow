@@ -76,26 +76,26 @@ namespace Symulator_lotow
         }
         public void RysujDron(Point pos_srodka, Graphics g)
         {
-            RysujObiektLatajacy(pos_srodka, Color.Black, 4, g);//rozmiar 4
+            RysujObiektLatajacy(pos_srodka, Color.Black, 4, g);
         }
         public void RysujSamolot(Point pos_srodka, Graphics g)
         {
-            RysujObiektLatajacy(pos_srodka, Color.Yellow, 12, g); //rozmiar 12
+            RysujObiektLatajacy(pos_srodka, Color.Yellow, 12, g);
         }
 
         public void RysujSmiglowiec(Point pos_srodka, Graphics g)
         {
-            RysujObiektLatajacy(pos_srodka, Color.Orange, 10, g); //rozmiar 10
+            RysujObiektLatajacy(pos_srodka, Color.Orange, 10, g);
         }
 
         public void RysujBalon(Point pos_srodka, Graphics g)
         {
-            RysujObiektLatajacy(pos_srodka, Color.Violet, 6, g);//rozmiar 6
+            RysujObiektLatajacy(pos_srodka, Color.Violet, 6, g);
         }
 
         public void RysujSzybowiec(Point pos_srodka, Graphics g)
         {
-            RysujObiektLatajacy(pos_srodka, Color.Red, 8, g); //rozmiar 8
+            RysujObiektLatajacy(pos_srodka, Color.Red, 8, g);
         }
 
         public void RysujNiebezpieczenstwo(Point pos, Graphics g)
@@ -135,17 +135,6 @@ namespace Symulator_lotow
             {
                 int pol_a = Convert.ToInt32(w.bok/ 2.0);
                 RysujWiezowiec(new Point(x - pol_a, y - pol_a), pol_a * 2, g);
-            }
-        }
-        private void WyswietlMape(List<ObiektyStale> obiekty_stale, List<ObiektyRuchome> statki_powietrzne, Graphics g)
-        {
-            foreach (ObiektyStale os in obiekty_stale)
-            {
-                RysujObiekt(os, g);
-            }
-            foreach (ObiektyRuchome sp in statki_powietrzne)
-            {
-                RysujObiekt(sp, g);
             }
         }
     }

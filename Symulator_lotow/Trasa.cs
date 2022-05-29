@@ -27,13 +27,6 @@
             return 0;
             
         }
-        /*public Trasa(List<OdcinekTrasy> odcinki)
-        {
-            foreach (OdcinekTrasy odc in odcinki)
-            {
-                this.odcinki.Add(odc);
-            }
-        }*/
     }
 
     public class OdcinekTrasy
@@ -46,14 +39,5 @@
             this.predkosc = predkosc;
             this.koniec_odcinka = new Punkt(punkt_docelowy.x, punkt_docelowy.y, punkt_docelowy.z);
         }
-
-        public OdcinekTrasy(OdcinekTrasy t)
-        {
-            predkosc = t.predkosc;
-            koniec_odcinka = t.koniec_odcinka;
-        }
     }
-
-
-
 }

@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 namespace Symulator_lotow
 {
 
-    public class ObiektyRuchome
+    public class ObiektyRuchome : SymulowanyObiekt
     {
         public Punkt aktualna_pozycja;
         public Trasa trasa;
         public readonly int rozmiar = 1;// rozmiar statku powietrznego bedzie potrzebny przy wykrywaniu kolizji
-        public string nazwa;
+        //public string nazwa;
         public virtual int hmin { get; }
         public virtual int hmax { get; }
         public virtual int vmin { get; }
         public virtual int vmax { get; }
-        public bool CzyZawieraPunkt(Punkt p)
+        public override bool CzyZawieraPunkt(Punkt p)
         {
             if (p.Odleglosc(aktualna_pozycja) <= rozmiar)
             {

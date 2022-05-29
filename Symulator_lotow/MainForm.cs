@@ -20,16 +20,14 @@ namespace Symulator_lotow
         {
             InitializeComponent();
         }
-        //private float skala_piksele_metry = 1F; //nie wiem czy to bedzie potrzebne
         public PictureBox pictureBox1 = new PictureBox();
         private void Form1_Load(object sender, EventArgs e)
         {
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.BackColor = Color.White;
-            
             this.Controls.Add(pictureBox1);
         }
-
+        /*
         public int GetScreenHeight()
         {
             return pictureBox1.ClientSize.Height;
@@ -38,7 +36,7 @@ namespace Symulator_lotow
         public int GetScreenWidth()
         {
             return pictureBox1.ClientSize.Width;
-        }
+        }*/
 
         public void Redraw()
         {

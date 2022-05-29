@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
+
 namespace Symulator_lotow
 {
 	public class Symulator
 	{
 		internal List<ObiektyStale> obiekty_stale = new List<ObiektyStale>();
 		internal List<ObiektyRuchome> statki_powietrzne = new List<ObiektyRuchome>();
-		private int maxx = 1000, maxy = 1000, maxz = 10000;
+		public List<Zdarzenie> wykryte_zdarzenia = new List<Zdarzenie>(); 
+		private int maxx = 1000, maxy = 1000;
 		public Symulator()
 		{
 		}
@@ -51,15 +54,13 @@ namespace Symulator_lotow
 			}
 			catch (FileNotFoundException e)
 			{
-				Console.Write(e+": Nie znaleziono pliku!!");
+				Debug.WriteLine(e+": Nie znaleziono pliku!!");
 			}
 		}
 
 		public void WykryjKolizje()
         {
-			//Funkcja musi jakosc przekazac informacje o kolizjach do kontrolera lotu
-			//należy każdy statek powietrzny porównać z każdym statkiem powietrznym i obiektem stałym
-			//wykryj kolizje jeśli odległość jest mniejsza niż 100
+			wykryte_zdarzenia.Clear();
 			//1. Porównujemy wysokość (składowa z)
 			foreach (ObiektyRuchome sp in statki_powietrzne)
 			{
@@ -76,7 +77,7 @@ namespace Symulator_lotow
 							//2. Sprawdzamy czy na płaszczyźnie odległość jest mniejsza od 100 (skladowe x,y)
 							if(Math.Sqrt(Math.Abs(sp.aktualna_pozycja.x- sp2.aktualna_pozycja.x)* Math.Abs(sp.aktualna_pozycja.x - sp2.aktualna_pozycja.x) + Math.Abs(sp.aktualna_pozycja.y - sp2.aktualna_pozycja.y) * Math.Abs(sp.aktualna_pozycja.y - sp2.aktualna_pozycja.y)) <100)
                             {
-								//wykryto kolizje
+								wykryte_zdarzenia.Add(new Zblizenie(sp, sp2));//wykryto niebezpieczne zblizenie
                             }
                         }
 					}
@@ -135,7 +136,7 @@ namespace Symulator_lotow
 				statki_powietrzne.Add(nowy_statek);
 			}
         }
-		public void SymulujRuch(double krok) // trzeba przetestowac jaka wartosc krok bedzie sensowna
+		public void SymulujRuch(double krok)
 		{
 			foreach (ObiektyRuchome sp in statki_powietrzne)
 			{
@@ -148,6 +149,14 @@ namespace Symulator_lotow
 					sp.aktualna_pozycja = new Punkt(sp.trasa.KoniecAktualnegoOdcinka());
 					++sp.trasa.nr_aktualnego_odcinka;
 					sp.aktualna_pozycja.z = sp.trasa.KoniecAktualnegoOdcinka().z;
+					if(sp.trasa.nr_aktualnego_odcinka < sp.trasa.odcinki.Count())
+                    {
+						sp.aktualna_pozycja.z = sp.trasa.KoniecAktualnegoOdcinka().z;
+					}
+                    else
+                    {
+						sp.aktualna_pozycja.z = 0;
+                    }
 				}
 			}
 		}

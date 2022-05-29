@@ -1,4 +1,5 @@
 ﻿using Symulator_lotow;
+using System.Diagnostics;
 using System.Windows.Forms;
 public class KontrolerRadaru
 {
@@ -14,7 +15,6 @@ public class KontrolerRadaru
         symulator = new Symulator();
         mainForm.pictureBox1.Paint += new PaintEventHandler(RysujZawartoscPictureBoxa);
     }
-    public static int licznik = 0; //chyba nie jest potrzebne ale na razie zostawie
     public void RysujStale(Graphics g)
     {
         foreach (ObiektyStale os in symulator.obiekty_stale)
@@ -70,26 +70,53 @@ public class KontrolerRadaru
     }
     public void RysujZawartoscPictureBoxa(object sender, PaintEventArgs e)
     {
-
-
         Graphics g = e.Graphics;
         RysujStale(g);       
         RysujRuchome(g);
-
     }
     public void WczytajMape()
     {
         string sciezka = Path.Combine(Environment.CurrentDirectory.ToString(), @"..\..\..\..\Mapa.txt");
         symulator.WczytajPlik(sciezka);
-
     }
+
+    double KROK_SYMULACJI = 0.02;
     private void SymulujRuch(Object myObject, EventArgs e)
     {
-        double krok = 0.02;//trzeba pzetestowac jaka tu dac wartosc
-        symulator.SymulujRuch(krok);
+        symulator.SymulujRuch(KROK_SYMULACJI);
         symulator.WykryjKolizje();//tutaj trzeba dodac jeszcze obsluge kolizji
+        ZareagujNaZdarzenia(symulator.wykryte_zdarzenia);
         mainForm.Redraw();
     }
+    bool can_send_message = true;
+    private void ZareagujNaZdarzenia(List<Zdarzenie> wykryte_zdarzenia)
+    {
+        /*if (wykryte_zdarzenia.Count == 0) return;
+        Zdarzenie zdarzenie = wykryte_zdarzenia[0];
+        string message="";
+        if(zdarzenie is Kolizja k)
+        {
+            message = "Kolizja miedzy " + k.a.nazwa + " a " + k.b.nazwa;
+        }
+        else if(zdarzenie is Zblizenie z)
+        {
+            message = "Zblizenie miedzy " + z.a.nazwa + " a " + z.b.nazwa;
+        }
+        if (can_send_message)
+        {
+            DialogResult r5 = MessageBox.Show(message,
+                               "Niebezpieczenstwo", MessageBoxButtons.OK,
+                               MessageBoxIcon.Warning);
+            can_send_message = false;
+            KROK_SYMULACJI = 0;
+            if (r5 == DialogResult.OK)
+            {
+                 can_send_message = true;
+                 KROK_SYMULACJI = 0.02;
+            }
+        }*/
+    }
+
     public void UruchomSymulacje()
     {
         WczytajMape();
