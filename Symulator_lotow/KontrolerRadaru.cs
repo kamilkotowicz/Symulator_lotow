@@ -80,7 +80,7 @@ public class KontrolerRadaru
         symulator.WczytajPlik(sciezka);
     }
 
-    double KROK_SYMULACJI = 0.02;
+    double KROK_SYMULACJI = 0.05;
     private void SymulujRuch(Object myObject, EventArgs e)
     {
         symulator.SymulujRuch(KROK_SYMULACJI);
@@ -91,30 +91,32 @@ public class KontrolerRadaru
     bool can_send_message = true;
     private void ZareagujNaZdarzenia(List<Zdarzenie> wykryte_zdarzenia)
     {
-        /*if (wykryte_zdarzenia.Count == 0) return;
+        if (wykryte_zdarzenia.Count == 0)
+        {
+            KROK_SYMULACJI = 0.05;
+            return;
+        }
         Zdarzenie zdarzenie = wykryte_zdarzenia[0];
         string message="";
         if(zdarzenie is Kolizja k)
         {
             message = "Kolizja miedzy " + k.a.nazwa + " a " + k.b.nazwa;
         }
-        else if(zdarzenie is Zblizenie z)
+        else if(zdarzenie is NiebezpieczneZblizenie z)
         {
             message = "Zblizenie miedzy " + z.a.nazwa + " a " + z.b.nazwa;
         }
         if (can_send_message)
         {
-            DialogResult r5 = MessageBox.Show(message,
-                               "Niebezpieczenstwo", MessageBoxButtons.OK,
-                               MessageBoxIcon.Warning);
             can_send_message = false;
             KROK_SYMULACJI = 0;
-            if (r5 == DialogResult.OK)
+            DialogResult res = MessageBox.Show(message,"Niebezpieczenstwo", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+            if (res == DialogResult.OK)
             {
                  can_send_message = true;
-                 KROK_SYMULACJI = 0.02;
+                 KROK_SYMULACJI = 0.25; // zwiekszam szybkosc symulacji, aby pozbyc sie wielokrotnie wyskakujacych okienek do tego samego zblizenia
             }
-        }*/
+        }
     }
 
     public void UruchomSymulacje()
@@ -123,7 +125,7 @@ public class KontrolerRadaru
         symulator.GenerujStatkiPowietrzne();
         System.Windows.Forms.Timer t1 = new System.Windows.Forms.Timer();
         t1.Tick += new EventHandler(SymulujRuch);
-        t1.Interval = 100;
+        t1.Interval = 500;
         t1.Start();
     }
 

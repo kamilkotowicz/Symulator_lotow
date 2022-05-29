@@ -60,26 +60,24 @@ namespace Symulator_lotow
 
 		public void WykryjKolizje()
         {
+			const double ODLEGLOSC_KOLIZJI = 25;
+			const double ODLEGLOSC_NIEBEZPIECZNA = 100;
 			wykryte_zdarzenia.Clear();
-			//1. Porównujemy wysokość (składowa z)
 			foreach (ObiektyRuchome sp in statki_powietrzne)
 			{
 				foreach (ObiektyRuchome sp2 in statki_powietrzne)
 				{
 					if (sp2 != sp)
 					{
-						if (Math.Abs(sp2.aktualna_pozycja.z - sp.aktualna_pozycja.z) < 100)
+						double odleglosc = sp.aktualna_pozycja.Odleglosc(sp2.aktualna_pozycja);
+						if (odleglosc < ODLEGLOSC_KOLIZJI)
                         {
-							//wykryto kolizje - wysokosc miedzy obiektami mniejsza od 100
-                        }
-                        else
+							wykryte_zdarzenia.Add(new Kolizja(sp, sp2));
+						}
+						else if(odleglosc < ODLEGLOSC_NIEBEZPIECZNA)
                         {
-							//2. Sprawdzamy czy na płaszczyźnie odległość jest mniejsza od 100 (skladowe x,y)
-							if(Math.Sqrt(Math.Abs(sp.aktualna_pozycja.x- sp2.aktualna_pozycja.x)* Math.Abs(sp.aktualna_pozycja.x - sp2.aktualna_pozycja.x) + Math.Abs(sp.aktualna_pozycja.y - sp2.aktualna_pozycja.y) * Math.Abs(sp.aktualna_pozycja.y - sp2.aktualna_pozycja.y)) <100)
-                            {
-								wykryte_zdarzenia.Add(new Zblizenie(sp, sp2));//wykryto niebezpieczne zblizenie
-                            }
-                        }
+							wykryte_zdarzenia.Add(new NiebezpieczneZblizenie(sp, sp2));
+						}
 					}
 				}
 			}
@@ -118,7 +116,7 @@ namespace Symulator_lotow
 		public void GenerujStatkiPowietrzne()
         {
 			Random rand = new Random();
-			const int ILE_STATKOW = 8;
+			const int ILE_STATKOW = 10;
 			for(int i= 0; i < ILE_STATKOW; i++)
             {
 				ObiektyRuchome nowy_statek = StatekLosowegoTypu(i);

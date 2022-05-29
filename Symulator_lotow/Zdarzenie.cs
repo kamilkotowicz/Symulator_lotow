@@ -14,8 +14,8 @@
         public Kolizja(SymulowanyObiekt a, SymulowanyObiekt b) : base(a, b) { }
     }
 
-    public class Zblizenie : Zdarzenie
+    public class NiebezpieczneZblizenie : Zdarzenie
     {
-        public Zblizenie(SymulowanyObiekt a, SymulowanyObiekt b) : base(a, b) { }
+        public NiebezpieczneZblizenie(SymulowanyObiekt a, SymulowanyObiekt b) : base(a, b) { }
     }
 }
