@@ -65,26 +65,35 @@ namespace Symulator_lotow
 			const double ODLEGLOSC_NIEBEZPIECZNA = 100;
 			wykryte_zblizenia.Clear();
 			wykryte_kolizje.Clear();
-			for(int i=0;i<statki_powietrzne.Count;++i) //uzycie petli for zamiast foreach w celu wydajnosciowym - aby nie dodawac 2 razy tej samej kolizji
+			for (int i = 0; i < statki_powietrzne.Count; ++i) //uzycie petli for zamiast foreach w celu wydajnosciowym - aby nie dodawac 2 razy tej samej kolizji
 			{
 				ObiektyRuchome sp = statki_powietrzne[i];
-				for(int j=i+1;j<statki_powietrzne.Count;++j)
-				{	
+				for (int j = i + 1; j < statki_powietrzne.Count; ++j)
+				{
 					ObiektyRuchome sp2 = statki_powietrzne[j];
 					double odleglosc = sp.aktualna_pozycja.Odleglosc(sp2.aktualna_pozycja);
 					if (odleglosc < ODLEGLOSC_KOLIZJI)
-                    {
+					{
 						wykryte_kolizje.Add(new Kolizja(sp, sp2, odleglosc));
 					}
-					else if(odleglosc < ODLEGLOSC_NIEBEZPIECZNA)
-                    {
+					else if (odleglosc < ODLEGLOSC_NIEBEZPIECZNA)
+					{
 						wykryte_zblizenia.Add(new NiebezpieczneZblizenie(sp, sp2, odleglosc));
 					}
 				}
 			}
 
-
-
+			for (int i = 0; i < statki_powietrzne.Count; ++i)
+			{
+				ObiektyRuchome sp = statki_powietrzne[i];
+				foreach (ObiektyStale os in obiekty_stale)
+				{
+					if (os.CzyZawieraPunkt(sp.aktualna_pozycja) == true)
+					{
+						wykryte_kolizje.Add(new Kolizja(sp, os, 0));
+					}
+				}
+			}
 		}
 
 		private ObiektyRuchome StatekLosowegoTypu(int id)

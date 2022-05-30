@@ -27,7 +27,7 @@ namespace Symulator_lotow
         }
         public override bool CzyZawieraPunkt(Punkt p)
         {
-            if (p.Odleglosc(pozycja_srodka) <= promien) return true;
+            if (p.Odleglosc(pozycja_srodka) <= promien && p.z <= wysokosc) return true;
             return false;
         }
         
@@ -41,7 +41,7 @@ namespace Symulator_lotow
         }
         public override bool CzyZawieraPunkt(Punkt p)
         {
-            if (p.Odleglosc(pozycja_srodka) <= promien) return true;
+            if (p.Odleglosc(pozycja_srodka) <= promien && p.z <= wysokosc) return true;
             return false;
         }
         
