@@ -91,25 +91,50 @@ public class KontrolerRadaru
     bool can_send_message = true;
     private void ZareagujNaKolizje(List<Kolizja> wykryte_kolizje)
     {
-        /*foreach (Kolizja kolizja in wykryte_kolizje)
+        for (int i=0;i<wykryte_kolizje.Count;++i)
         {
-            string message = "Kolizja miedzy " + kolizja.a.nazwa + " a " + kolizja.b.nazwa + "\nOdleglosc " + kolizja.odleglosc;
-            if (can_send_message)
+            Kolizja kolizja = wykryte_kolizje[i];
+            if (!(((kolizja.a is ObiektyRuchome sp3) && (sp3.czy_skonczyl_lot == true)) || ((kolizja.b is ObiektyRuchome sp4) && (sp4.czy_skonczyl_lot == true))))
             {
-                can_send_message = false;
-                KROK_SYMULACJI = 0;
-                DialogResult res = MessageBox.Show(message, "Kolizja", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                if (res == DialogResult.OK)
+                if (kolizja.a is ObiektyRuchome sp)
                 {
-                    can_send_message = true;
-                    KROK_SYMULACJI = 0.25; // zwiekszam szybkosc symulacji, aby pozbyc sie wielokrotnie wyskakujacych okienek do tego samego zblizenia
+                    sp.czy_skonczyl_lot = true;
+                    sp.trasa.odcinki.Clear();
+                    if (can_send_message)
+                    {
+                        can_send_message = false;
+                        KROK_SYMULACJI = 0;
+                        DialogResult res = MessageBox.Show("BUM!", $"Kolizja. Obiekt{sp.nazwa} zniszczony", MessageBoxButtons.OK);
+                        if (res == DialogResult.OK)
+                        {
+                            can_send_message = true;
+                            KROK_SYMULACJI = 0.05;
+                        }
+                    }
+                }
+                if (kolizja.b is ObiektyRuchome sp2)
+                {
+                    sp2.czy_skonczyl_lot = true;
+                    sp2.trasa.odcinki.Clear();
+                    if (can_send_message)
+                    {
+                        can_send_message = false;
+                        KROK_SYMULACJI = 0;
+                        DialogResult res = MessageBox.Show("BUM!", $"Kolizja. Obiekt{sp2.nazwa} zniszczony", MessageBoxButtons.OK);
+                        if (res == DialogResult.OK)
+                        {
+                            can_send_message = true;
+                            KROK_SYMULACJI = 0.05;
+                        }
+                    }
                 }
             }
-        }*/
+
+
+        }
     }
     private void ZareagujNaZblizenia(List<NiebezpieczneZblizenie> wykryte_zblizenia)
     {
-        //Blad jesli wylosowane koncowe punkty trasy dla 2 samolotow sa bliskie siebie to okienko bedzie wyskakiwac w nieskonczonosc
         if (wykryte_zblizenia.Count == 0)
         {
             KROK_SYMULACJI = 0.05;
@@ -129,7 +154,6 @@ public class KontrolerRadaru
                 {
                     can_send_message = false;
                     KROK_SYMULACJI = 0;
-                   // DialogResult res = MessageBox.Show(message, "Niebezpieczenstwo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     DialogResult res = MessageBox.Show(message, "Czy chcesz zmienic trase?", MessageBoxButtons.YesNo);
                     if (res == DialogResult.No)
                     {
@@ -144,10 +168,15 @@ public class KontrolerRadaru
                             int ile_odcinkow = ob1.trasa.odcinki.Count();
                             if(ob1.trasa.nr_aktualnego_odcinka == ile_odcinkow - 1)//jesli aktualny odcinek trasy byl ostatni dodaj go na koniec
                             {
-                                ob1.trasa.odcinki.Add(new OdcinekTrasy(ob1.trasa.odcinki[ile_odcinkow - 1]));
+                                OdcinekTrasy  kopia = new OdcinekTrasy(ob1.trasa.odcinki[ile_odcinkow - 1]);
+                                ob1.zmien_trase_recznie(losowy.predkosc, losowy.koniec_odcinka);
+                                ob1.trasa.odcinki.Add(kopia);
+                            }
+                            else
+                            {
+                                ob1.zmien_trase_recznie(losowy.predkosc, losowy.koniec_odcinka);
                             }
                             
-                            ob1.zmien_trase_recznie(losowy.predkosc, losowy.koniec_odcinka);
                         }
                         if(zblizenie.b is ObiektyRuchome ob2)
                         {
@@ -155,9 +184,13 @@ public class KontrolerRadaru
                             int ile_odcinkow = ob2.trasa.odcinki.Count();
                             if (ob2.trasa.nr_aktualnego_odcinka == ile_odcinkow - 1)//jesli aktualny odcinek trasy byl ostatni dodaj go na koniec
                             {
-                                ob2.trasa.odcinki.Add(new OdcinekTrasy(ob2.trasa.odcinki[ile_odcinkow - 1]));
+                                OdcinekTrasy kopia = new OdcinekTrasy(ob2.trasa.odcinki[ile_odcinkow - 1]);
+                                ob2.zmien_trase_recznie(losowy.predkosc, losowy.koniec_odcinka);
+                                ob2.trasa.odcinki.Add(kopia);
                             }
-                            ob2.zmien_trase_recznie(losowy.predkosc, losowy.koniec_odcinka);
+                            else { 
+                                ob2.zmien_trase_recznie(losowy.predkosc, losowy.koniec_odcinka);
+                            }
                         }
                         can_send_message = true;
                         KROK_SYMULACJI = 0.25;

@@ -13,6 +13,7 @@ namespace Symulator_lotow
         public Punkt aktualna_pozycja;
         public Trasa trasa;
         public bool czy_skonczyl_lot = false;
+        public bool czy_zbugowany = false;
         public readonly int rozmiar = 1;// rozmiar statku powietrznego bedzie potrzebny przy wykrywaniu kolizji
         //public string nazwa;
         public virtual int hmin { get; }
@@ -60,7 +61,7 @@ namespace Symulator_lotow
         public void UstawTraseLosowo(int maxx,int maxy)
         {
             Random rand = new Random();
-            int LICZBA_ODCINKOW = rand.Next(1, 1);
+            int LICZBA_ODCINKOW = rand.Next(2, 4);
             trasa = new Trasa();
             for(int i=0;i<LICZBA_ODCINKOW; i++)
             {

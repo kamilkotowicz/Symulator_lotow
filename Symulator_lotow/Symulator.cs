@@ -29,7 +29,6 @@ namespace Symulator_lotow
 					int x = Convert.ToInt32(dane[1]);
 					int y = Convert.ToInt32(dane[2]);
 					int z = Convert.ToInt32(dane[ile_danych - 1]);
-					z *= 100;
 					int r, a, b;
 					if (dane[0] == "D")
 					{
@@ -150,9 +149,25 @@ namespace Symulator_lotow
 			foreach (ObiektyRuchome sp in statki_powietrzne)
 			{
 				Punkt v = sp.skladowe_predkosci();
+				//Naprawa bledu w ktorym po zmianie trasy skladajacej sie z 1 odcinka predkosc samolotu maleje do zera
+				double predkosc_rzeczywista = Math.Sqrt(v.x * v.x + v.y * v.y);
+				double predkosc_teorytyczna = sp.trasa.PredkoscAktualnegoOdcinka();
+				if (Math.Abs(predkosc_rzeczywista - predkosc_teorytyczna) > 1)
+				{
+					sp.czy_zbugowany = true;
+					v.x *= predkosc_teorytyczna / predkosc_rzeczywista;
+					v.y *= predkosc_teorytyczna / predkosc_rzeczywista;
+				}
 				sp.aktualna_pozycja.x += krok * v.x;
 				sp.aktualna_pozycja.y += krok * v.y;
 				Punkt v2 = sp.skladowe_predkosci();
+				if (sp.czy_zbugowany == true)
+                {
+					Debug.WriteLine(sp.nazwa);
+					Debug.WriteLine("V_zewnatrz "+sp.trasa.PredkoscAktualnegoOdcinka());
+					Debug.WriteLine($"v.x = {v.x} v.y = {v.y}");
+					Debug.WriteLine($"v2.x = {v2.x} v2.y = {v2.y}");
+				}
                 if ((v.x * v2.x < 0) || (v.y * v2.y < 0)) // gdy samolot doleci do konca odcinka zmienilby swoja predkosc na przeciwna
                 {
 					sp.aktualna_pozycja = new Punkt(sp.trasa.KoniecAktualnegoOdcinka());

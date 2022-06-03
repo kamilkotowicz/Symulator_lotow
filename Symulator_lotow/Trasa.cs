@@ -24,10 +24,6 @@
             {
                 return odcinki[nr_aktualnego_odcinka].predkosc;
             }
-            if (ile_odcinkow > 0)//test
-            {
-                return odcinki[ile_odcinkow - 1].predkosc;
-            }
             return 0;
             
         }
@@ -46,7 +42,7 @@
         public OdcinekTrasy(OdcinekTrasy odc)
         {
             this.predkosc=odc.predkosc;
-            this.koniec_odcinka=odc.koniec_odcinka;
+            this.koniec_odcinka=new Punkt(odc.koniec_odcinka);
         }
     }
 }
