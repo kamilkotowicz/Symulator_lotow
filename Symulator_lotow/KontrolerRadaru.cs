@@ -129,11 +129,38 @@ public class KontrolerRadaru
                 {
                     can_send_message = false;
                     KROK_SYMULACJI = 0;
-                    DialogResult res = MessageBox.Show(message, "Niebezpieczenstwo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    if (res == DialogResult.OK)
+                   // DialogResult res = MessageBox.Show(message, "Niebezpieczenstwo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    DialogResult res = MessageBox.Show(message, "Czy chcesz zmienic trase?", MessageBoxButtons.YesNo);
+                    if (res == DialogResult.No)
                     {
                         can_send_message = true;
                         KROK_SYMULACJI = 0.25; // zwiekszam szybkosc symulacji, aby pozbyc sie wielokrotnie wyskakujacych okienek do tego samego zblizenia
+                    }
+                    else if(res == DialogResult.Yes)
+                    {
+                        if(zblizenie.a is ObiektyRuchome ob1)
+                        {
+                            OdcinekTrasy losowy = ob1.GenerujLosowyOdcinek(Symulator.MAXX, Symulator.MAXY);
+                            int ile_odcinkow = ob1.trasa.odcinki.Count();
+                            if(ob1.trasa.nr_aktualnego_odcinka == ile_odcinkow - 1)//jesli aktualny odcinek trasy byl ostatni dodaj go na koniec
+                            {
+                                ob1.trasa.odcinki.Add(new OdcinekTrasy(ob1.trasa.odcinki[ile_odcinkow - 1]));
+                            }
+                            
+                            ob1.zmien_trase_recznie(losowy.predkosc, losowy.koniec_odcinka);
+                        }
+                        if(zblizenie.b is ObiektyRuchome ob2)
+                        {
+                            OdcinekTrasy losowy = ob2.GenerujLosowyOdcinek(Symulator.MAXX, Symulator.MAXY);
+                            int ile_odcinkow = ob2.trasa.odcinki.Count();
+                            if (ob2.trasa.nr_aktualnego_odcinka == ile_odcinkow - 1)//jesli aktualny odcinek trasy byl ostatni dodaj go na koniec
+                            {
+                                ob2.trasa.odcinki.Add(new OdcinekTrasy(ob2.trasa.odcinki[ile_odcinkow - 1]));
+                            }
+                            ob2.zmien_trase_recznie(losowy.predkosc, losowy.koniec_odcinka);
+                        }
+                        can_send_message = true;
+                        KROK_SYMULACJI = 0.25;
                     }
                 }
                 break;

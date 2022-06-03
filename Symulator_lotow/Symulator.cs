@@ -9,7 +9,7 @@ namespace Symulator_lotow
 		internal List<ObiektyRuchome> statki_powietrzne = new List<ObiektyRuchome>();
 		public List<NiebezpieczneZblizenie> wykryte_zblizenia = new List<NiebezpieczneZblizenie>();
 		public List<Kolizja> wykryte_kolizje = new List<Kolizja>();
-		private const int MAXX = 1000, MAXY = 1000;
+		public const int MAXX = 1000, MAXY = 1000;
 		public Symulator()
 		{
 		}
@@ -29,6 +29,7 @@ namespace Symulator_lotow
 					int x = Convert.ToInt32(dane[1]);
 					int y = Convert.ToInt32(dane[2]);
 					int z = Convert.ToInt32(dane[ile_danych - 1]);
+					z *= 100;
 					int r, a, b;
 					if (dane[0] == "D")
 					{

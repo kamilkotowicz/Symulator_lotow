@@ -32,7 +32,7 @@ namespace Symulator_lotow
         {
             this.nazwa = nazwa;
         }
-        private Punkt LosujPozycje(int maxx, int maxy)
+        public Punkt LosujPozycje(int maxx, int maxy)
         {
             Random rand = new Random();
             int x = rand.Next(0, maxx);
@@ -45,21 +45,26 @@ namespace Symulator_lotow
             aktualna_pozycja = LosujPozycje(maxx, maxy);
         }
 
-        public void zmien_trase_recznie(Trasa t, double predkosc, Punkt nowy_koniec_odcinka) //wykonujemy ta funkcje jesli "wykryto kolizje"
+        public void zmien_trase_recznie(double predkosc, Punkt nowy_koniec_odcinka) //wykonujemy ta funkcje jesli "wykryto kolizje"
         {        
-            t.odcinki[t.nr_aktualnego_odcinka] = new OdcinekTrasy(predkosc, nowy_koniec_odcinka);
+            this.trasa.odcinki[this.trasa.nr_aktualnego_odcinka] = new OdcinekTrasy(predkosc, nowy_koniec_odcinka);
+        }
+        public OdcinekTrasy GenerujLosowyOdcinek(int maxx,int maxy)
+        {
+            Random rand = new Random();
+            int predkosc = rand.Next(vmin, vmax);
+            Punkt koniec_odcinka = LosujPozycje(maxx, maxy);
+            return new OdcinekTrasy(predkosc, koniec_odcinka);
         }
 
         public void UstawTraseLosowo(int maxx,int maxy)
         {
             Random rand = new Random();
-            int LICZBA_ODCINKOW = rand.Next(2, 4);
+            int LICZBA_ODCINKOW = rand.Next(1, 1);
             trasa = new Trasa();
             for(int i=0;i<LICZBA_ODCINKOW; i++)
             {
-                int predkosc = rand.Next(vmin, vmax);
-                Punkt koniec_odcinka = LosujPozycje(maxx, maxy);
-                OdcinekTrasy odc = new OdcinekTrasy(predkosc, koniec_odcinka);
+                OdcinekTrasy odc = GenerujLosowyOdcinek(maxx, maxy);
                 trasa.odcinki.Add(odc);
             }
         }
