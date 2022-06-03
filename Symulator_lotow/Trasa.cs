@@ -6,7 +6,7 @@
         public int nr_aktualnego_odcinka = 0;
         public Punkt KoniecAktualnegoOdcinka()
         {
-            int ile_odcinkow = odcinki.Count();
+            int ile_odcinkow = odcinki.Count;
             if (nr_aktualnego_odcinka < ile_odcinkow)
             {
                 return odcinki[nr_aktualnego_odcinka].koniec_odcinka;
@@ -19,7 +19,7 @@
         }
         public double PredkoscAktualnegoOdcinka()
         {
-            int ile_odcinkow = odcinki.Count();
+            int ile_odcinkow = odcinki.Count;
             if(nr_aktualnego_odcinka < ile_odcinkow)
             {
                 return odcinki[nr_aktualnego_odcinka].predkosc;
