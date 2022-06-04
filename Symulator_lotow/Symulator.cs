@@ -9,7 +9,7 @@ namespace Symulator_lotow
 		internal List<ObiektyRuchome> statki_powietrzne = new List<ObiektyRuchome>();
 		public List<NiebezpieczneZblizenie> wykryte_zblizenia = new List<NiebezpieczneZblizenie>();
 		public List<Kolizja> wykryte_kolizje = new List<Kolizja>();
-		private static Random rand = new Random();
+		private static readonly Random rand = new Random();
 		public const int MAXX = 1000, MAXY = 1000;
 		public const double ODLEGLOSC_KOLIZJI = 25;
 		public const double ODLEGLOSC_NIEBEZPIECZNA = 100;
@@ -56,7 +56,7 @@ namespace Symulator_lotow
         {		
 			int x = Convert.ToInt32(dane[1]);
 			int y = Convert.ToInt32(dane[2]);
-			int z = Convert.ToInt32(dane[dane.Length - 1]);
+			int z = Convert.ToInt32(dane[^1]);
 			int r, a, b;
 			switch (dane[0])
 			{
@@ -175,31 +175,23 @@ namespace Symulator_lotow
 			return false;
 		}
 
+		private bool CzyDolecialDoKoncaOdcinka(Punkt v, Punkt v2)
+        {
+			return (v.x * v2.x < 0) || (v.y * v2.y < 0); // gdy samolot dolatuje do konca odcinka skladowe jego predkosci zmieniaja sie na przeciwne
+		}
 
 		public void SymulujRuch(double krok)
 		{
 			for (int i=0;i<statki_powietrzne.Count;++i)
 			{
 				ObiektyRuchome sp = statki_powietrzne[i];
-
-				Punkt v = sp.SkladowePredkosci();
-				sp.aktualna_pozycja.x += krok * v.x;
-				sp.aktualna_pozycja.y += krok * v.y;
-				Punkt v2 = sp.SkladowePredkosci();
-                if ((v.x * v2.x < 0) || (v.y * v2.y < 0)) // gdy samolot doleci do konca odcinka zmienilby swoja predkosc na przeciwna
+				if (sp.czy_skonczyl_lot == true) continue;
+				Punkt v_stara = sp.SkladowePredkosci();
+				sp.WykonajRuch(krok);
+				Punkt v_nowa = sp.SkladowePredkosci();
+                if (CzyDolecialDoKoncaOdcinka(v_stara, v_nowa))
                 {
-					sp.aktualna_pozycja = new Punkt(sp.trasa.KoniecAktualnegoOdcinka());
-					++sp.trasa.nr_aktualnego_odcinka;
-					sp.aktualna_pozycja.z = sp.trasa.KoniecAktualnegoOdcinka().z;
-					if(sp.trasa.nr_aktualnego_odcinka < sp.trasa.odcinki.Count)
-                    {
-						sp.aktualna_pozycja.z = sp.trasa.KoniecAktualnegoOdcinka().z;
-					}
-                    else
-                    {
-						sp.aktualna_pozycja.z = 0;
-						sp.czy_skonczyl_lot = true;
-                    }
+					sp.PrzejdzDoNastepnegoOdcinka();
 				}
 			}
 		}
