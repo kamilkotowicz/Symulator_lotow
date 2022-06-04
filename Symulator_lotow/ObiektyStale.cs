@@ -15,7 +15,15 @@ namespace Symulator_lotow
             this.nazwa = nazwa;
         }
         public override abstract bool CzyZawieraPunkt(Punkt p);
+        //public abstract bool CzyJestBlisko(Punkt p, double odleglosc);
+        public abstract double OdlegloscDoSamolotu(Punkt p);
 
+        public static double NajblizszyPunkt(double x, double minx, double maxx)
+        {
+            if (x < minx) return minx;
+            if (x > maxx) return maxx;
+            return x;
+        }
     }
 
     class Drzewo : ObiektyStale
@@ -31,6 +39,13 @@ namespace Symulator_lotow
             srodek.z = p.z;
             if (p.Odleglosc(srodek) <= promien && p.z <= wysokosc) return true;
             return false;
+        }
+
+        public override double OdlegloscDoSamolotu(Punkt p)
+        {
+            Punkt srodek = new Punkt(pozycja_srodka);
+            srodek.z = Math.Min(p.z, wysokosc);
+            return p.Odleglosc(srodek) - promien;
         }
         
     }
@@ -48,7 +63,13 @@ namespace Symulator_lotow
             if (p.Odleglosc(srodek) <= promien && p.z <= wysokosc) return true;
             return false;
         }
-        
+        public override double OdlegloscDoSamolotu(Punkt p)
+        {
+            Punkt srodek = new Punkt(pozycja_srodka);
+            srodek.z = Math.Min(p.z, wysokosc);
+            return p.Odleglosc(srodek) - promien;
+        }
+
     }
 
     class Blok : ObiektyStale
@@ -69,6 +90,15 @@ namespace Symulator_lotow
             if (minx <= p.x && miny <= p.y && p.x <= maxx && p.y <= maxy && p.z <= wysokosc) return true;   
             return false;
         }
+
+        public override double OdlegloscDoSamolotu(Punkt p)
+        {
+            Punkt najblizszy = new Punkt(pozycja_srodka);
+            najblizszy.x = NajblizszyPunkt(p.x, najblizszy.x - dlugosc, najblizszy.x + dlugosc);
+            najblizszy.y = NajblizszyPunkt(p.y, najblizszy.y - szerokosc, najblizszy.y + szerokosc);
+            najblizszy.z = Math.Min(p.z, wysokosc);
+            return p.Odleglosc(najblizszy);
+        }
     }
 
     class Wiezowiec : ObiektyStale
@@ -87,7 +117,14 @@ namespace Symulator_lotow
             if (minx <= p.x && miny <= p.y && p.x <= maxx && p.y <= maxy && p.z <= wysokosc) return true;
             return false;     
         }
-        
+        public override double OdlegloscDoSamolotu(Punkt p)
+        {
+            Punkt najblizszy = new Punkt(pozycja_srodka);
+            najblizszy.x = NajblizszyPunkt(p.x, najblizszy.x - bok, najblizszy.x + bok);
+            najblizszy.y = NajblizszyPunkt(p.y, najblizszy.y - bok, najblizszy.y + bok);
+            najblizszy.z = Math.Min(p.z, wysokosc);
+            return p.Odleglosc(najblizszy);
+        }
     }
 
 

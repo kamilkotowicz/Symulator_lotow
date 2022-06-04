@@ -109,11 +109,19 @@ namespace Symulator_lotow
 			{
 				foreach (ObiektyStale os in obiekty_stale)
 				{
-					if (os.CzyZawieraPunkt(sp.aktualna_pozycja) == true)
+					/*if (os.CzyZawieraPunkt(sp.aktualna_pozycja) == true)
 					{
 						wykryte_kolizje.Add(new Kolizja(sp, os, 0));
+					}*/
+					double odleglosc = os.OdlegloscDoSamolotu(sp.aktualna_pozycja);
+					if(odleglosc < ODLEGLOSC_KOLIZJI)
+                    {
+						wykryte_kolizje.Add(new Kolizja(sp, os, odleglosc));
 					}
-					//Brakuje funkcji do wykrycia zblizenia z obiektami stalymi
+					else if(odleglosc < ODLEGLOSC_NIEBEZPIECZNA)
+                    {
+						wykryte_zblizenia.Add(new NiebezpieczneZblizenie(sp, os, odleglosc));
+					}
 				}
 			}
 		}
