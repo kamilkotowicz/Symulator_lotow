@@ -10,8 +10,8 @@ namespace Symulator_lotow
 
     public class ObiektyRuchome : SymulowanyObiekt
     {
-        public Punkt aktualna_pozycja;
-        public Trasa trasa;
+        public Punkt aktualna_pozycja = new Punkt(0, 0, 0);
+        public Trasa trasa = new();
         public bool czy_skonczyl_lot = false;
         public bool czy_zbugowany = false;
         public readonly int rozmiar = 1;// rozmiar statku powietrznego bedzie potrzebny przy wykrywaniu kolizji
@@ -78,6 +78,26 @@ namespace Symulator_lotow
             double vx = licznik_x / mianownik;
             double vy= licznik_y / mianownik;
             return new Punkt(vx, vy, 0);
+        }
+        public void WykonajRuch(double krok)
+        {
+            aktualna_pozycja.x += krok * SkladowePredkosci().x;
+            aktualna_pozycja.y += krok * SkladowePredkosci().y;
+        }
+
+        public void PrzejdzDoNastepnegoOdcinka()
+        {
+            aktualna_pozycja = new Punkt(trasa.KoniecAktualnegoOdcinka());
+            ++trasa.nr_aktualnego_odcinka;
+            if (trasa.nr_aktualnego_odcinka < trasa.odcinki.Count)
+            {
+                aktualna_pozycja.z = trasa.KoniecAktualnegoOdcinka().z;
+            }
+            else
+            {
+                aktualna_pozycja.z = 0;
+                czy_skonczyl_lot = true;
+            }
         }
     }
 
