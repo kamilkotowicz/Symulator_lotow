@@ -10,9 +10,9 @@ namespace Symulator_lotow
 		public List<NiebezpieczneZblizenie> wykryte_zblizenia = new List<NiebezpieczneZblizenie>();
 		public List<Kolizja> wykryte_kolizje = new List<Kolizja>();
 		private static readonly Random rand = new Random();
-		public const int MAXX = 1000, MAXY = 1000;
-		public const double ODLEGLOSC_KOLIZJI = 25;
-		public const double ODLEGLOSC_NIEBEZPIECZNA = 100;
+		public const int MAXX = 1800, MAXY = 1000;
+		public const double ODLEGLOSC_KOLIZJI = 10;
+		public const double ODLEGLOSC_NIEBEZPIECZNA = 50;
 		public const int ILE_RODZAJOW_SAMOLOTOW = 5;
 		public const int ILE_SAMOLOTOW = 10;
 		public Symulator()
