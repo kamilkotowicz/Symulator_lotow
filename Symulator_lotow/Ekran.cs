@@ -97,45 +97,5 @@ namespace Symulator_lotow
         {
             RysujObiektLatajacy(pos_srodka, Color.Red, 8, g);
         }
-
-        public void RysujKolizje(Point pos, Graphics g)
-        {
-            RysujNapis("BUM!", Brushes.Red, pos, g);
-        }
-        public void RysujObiekt(Object o, Graphics g)
-        {
-            int x=0, y=0, r;
-            if(o is ObiektyStale os)
-            {
-                x = Convert.ToInt32(os.pozycja_srodka.x);
-                y = Convert.ToInt32(os.pozycja_srodka.y);
-            }
-            if (o is ObiektyRuchome or)
-            {
-                x = Convert.ToInt32(or.aktualna_pozycja.x);
-                y = Convert.ToInt32(or.aktualna_pozycja.y);
-            }
-            if (o is Drzewo d)
-            {
-                r = Convert.ToInt32(d.promien);
-                RysujDrzewo(new Point(x, y), r, g);
-            }
-            if(o is Komin k)
-            {
-                r = Convert.ToInt32(k.promien);
-                RysujKomin(new Point(x, y), r, g);
-            }
-            if(o is Blok bl)
-            {
-                int pol_a = Convert.ToInt32(bl.dlugosc/ 2.0);
-                int pol_b = Convert.ToInt32(bl.szerokosc/2.0);
-                RysujBlok(new Point(x - pol_a, y - pol_b), new Point(pol_a * 2, pol_b * 2), g);
-            }
-            if (o is Wiezowiec w)
-            {
-                int pol_a = Convert.ToInt32(w.bok/ 2.0);
-                RysujWiezowiec(new Point(x - pol_a, y - pol_a), pol_a * 2, g);
-            }
-        }
     }
 }

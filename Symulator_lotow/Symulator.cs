@@ -14,7 +14,9 @@ namespace Symulator_lotow
 		public const double ODLEGLOSC_KOLIZJI = 10;
 		public const double ODLEGLOSC_NIEBEZPIECZNA = 50;
 		public const int ILE_RODZAJOW_SAMOLOTOW = 5;
-		public const int ILE_SAMOLOTOW = 10;
+		public const int ILE_SAMOLOTOW = 8;
+		public const int MIN_LICZBA_ODCINKOW = 2;
+		public const int MAX_LICZBA_ODCINKOW = 4;
 		public Symulator()
 		{
 		}
@@ -109,10 +111,6 @@ namespace Symulator_lotow
 			{
 				foreach (ObiektyStale os in obiekty_stale)
 				{
-					/*if (os.CzyZawieraPunkt(sp.aktualna_pozycja) == true)
-					{
-						wykryte_kolizje.Add(new Kolizja(sp, os, 0));
-					}*/
 					double odleglosc = os.OdlegloscDoSamolotu(sp.aktualna_pozycja);
 					if(odleglosc < ODLEGLOSC_KOLIZJI)
                     {
@@ -159,7 +157,7 @@ namespace Symulator_lotow
 				while (CzyZajete(nowy_statek.aktualna_pozycja));
 				do
 				{
-					nowy_statek.UstawTraseLosowo(MAXX, MAXY);
+					nowy_statek.UstawTraseLosowo(MAXX, MAXY, MIN_LICZBA_ODCINKOW, MAX_LICZBA_ODCINKOW);
 				}
 				while (CzyZajete(nowy_statek.trasa.KoniecAktualnegoOdcinka()));
 				nowy_statek.aktualna_pozycja.z = nowy_statek.trasa.KoniecAktualnegoOdcinka().z;
@@ -171,7 +169,7 @@ namespace Symulator_lotow
 			foreach (ObiektyRuchome sp in statki_powietrzne)
 			{
 				Punkt akt_poz = sp.aktualna_pozycja;
-				if (p.Odleglosc(akt_poz) <= sp.rozmiar)
+				if (p.Odleglosc(akt_poz) <= ODLEGLOSC_KOLIZJI)
 				{
 					return true;
 				}

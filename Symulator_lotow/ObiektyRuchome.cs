@@ -13,16 +13,13 @@ namespace Symulator_lotow
         public Punkt aktualna_pozycja = new Punkt(0, 0, 0);
         public Trasa trasa = new();
         public bool czy_skonczyl_lot = false;
-        public bool czy_zbugowany = false;
-        public readonly int rozmiar = 1;// rozmiar statku powietrznego bedzie potrzebny przy wykrywaniu kolizji
-        //public string nazwa;
         public virtual int Hmin { get; }
         public virtual int Hmax { get; }
         public virtual int Vmin { get; }
         public virtual int Vmax { get; }
         public override bool CzyZawieraPunkt(Punkt p)
         {
-            if (p.Odleglosc(aktualna_pozycja) <= rozmiar)
+            if (p.Odleglosc(aktualna_pozycja) <= 0)
             {
                 return true;
             }
@@ -54,10 +51,10 @@ namespace Symulator_lotow
             return new OdcinekTrasy(predkosc, koniec_odcinka);
         }
 
-        public void UstawTraseLosowo(int maxx,int maxy)
+        public void UstawTraseLosowo(int maxx,int maxy,int odcinki_min, int odcinki_max)
         {
             Random rand = new Random();
-            int LICZBA_ODCINKOW = rand.Next(2, 4);
+            int LICZBA_ODCINKOW = rand.Next(odcinki_min, odcinki_max);
             trasa = new Trasa();
             for(int i=0;i<LICZBA_ODCINKOW; i++)
             {
@@ -97,6 +94,14 @@ namespace Symulator_lotow
             {
                 aktualna_pozycja.z = 0;
                 czy_skonczyl_lot = true;
+            }
+        }
+        public void ZmienTrase()
+        {
+            OdcinekTrasy losowy = GenerujLosowyOdcinek(Symulator.MAXX, Symulator.MAXY);
+            if (trasa.nr_aktualnego_odcinka < trasa.odcinki.Count - 1) // jesli zostal wiecej niz 1 odcinek na trasie
+            {
+                trasa.odcinki[trasa.nr_aktualnego_odcinka] = new OdcinekTrasy(losowy);
             }
         }
     }

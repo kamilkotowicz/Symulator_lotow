@@ -7,7 +7,6 @@ namespace Symulator_lotow
     {
         public double wysokosc;
         public Punkt pozycja_srodka;
-        //public string nazwa;
         public ObiektyStale(Punkt srodek, double wysokosc, string nazwa)
         {
             this.wysokosc = wysokosc;
@@ -15,7 +14,6 @@ namespace Symulator_lotow
             this.nazwa = nazwa;
         }
         public override abstract bool CzyZawieraPunkt(Punkt p);
-        //public abstract bool CzyJestBlisko(Punkt p, double odleglosc);
         public abstract double OdlegloscDoSamolotu(Punkt p);
 
         public static double NajblizszyPunkt(double x, double minx, double maxx)
