@@ -29,17 +29,27 @@ namespace Symulator_lotow
 			}
 			catch (FileNotFoundException e)
 			{
-				Debug.WriteLine(e);
+				Debug.WriteLine(e + "Nie znaleziono pliku.");
 				Environment.Exit(0);
 			}
 			catch (BadDataInFileException e)
 			{
-				Debug.WriteLine(e);
+				Debug.WriteLine(e + "Nieznany kod typu samolotu w pliku.");
+				Environment.Exit(0);
+			}
+			catch (FormatException e)
+            {
+				Debug.WriteLine(e + "W pewnym miejscu w pliku oczekiwano liczby, a nie napisu.");
+				Environment.Exit(0);
+            }
+			catch (OverflowException e)
+            {
+				Debug.WriteLine(e + "W pewnym miejscu w pliku podano zbyt duza liczbe.");
 				Environment.Exit(0);
 			}
 			catch (Exception)
 			{
-				Debug.WriteLine("Wystapil nieznany blad");
+				Debug.WriteLine("Wystapil nieznany blad.");
 				Environment.Exit(0);
 			}
 		}

@@ -27,17 +27,6 @@ namespace Symulator_lotow
             pictureBox1.BackColor = Color.White;
             this.Controls.Add(pictureBox1);
         }
-        /*
-        public int GetScreenHeight()
-        {
-            return pictureBox1.ClientSize.Height;
-        }
-
-        public int GetScreenWidth()
-        {
-            return pictureBox1.ClientSize.Width;
-        }*/
-
         public void Redraw()
         {
             this.pictureBox1.Invalidate();

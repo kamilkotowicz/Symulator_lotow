@@ -4,8 +4,10 @@ namespace Symulator_lotow
 {
     public class Trasa
     {
-        public List<OdcinekTrasy> odcinki = new List<OdcinekTrasy>();
+        private List<OdcinekTrasy> odcinki = new List<OdcinekTrasy>();
         public int nr_aktualnego_odcinka = 0;
+
+        public List<OdcinekTrasy> Odcinki { get => odcinki;  }
 
         private OdcinekTrasy AktualnyOdcinek()
         {
@@ -25,7 +27,7 @@ namespace Symulator_lotow
             catch(BrakOdcinkaException e)
             {
                 Debug.WriteLine(e);
-                return new Punkt(0, 0, 0);
+                throw;
             }
         }
         public double PredkoscAktualnegoOdcinka()

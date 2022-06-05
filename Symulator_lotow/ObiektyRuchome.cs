@@ -59,7 +59,7 @@ namespace Symulator_lotow
             for(int i=0;i<LICZBA_ODCINKOW; i++)
             {
                 OdcinekTrasy odc = GenerujLosowyOdcinek(maxx, maxy);
-                trasa.odcinki.Add(odc);
+                trasa.Odcinki.Add(odc);
             }
         }
         public Punkt SkladowePredkosci()
@@ -86,7 +86,7 @@ namespace Symulator_lotow
         {
             aktualna_pozycja = new Punkt(trasa.KoniecAktualnegoOdcinka());
             ++trasa.nr_aktualnego_odcinka;
-            if (trasa.nr_aktualnego_odcinka < trasa.odcinki.Count)
+            if (trasa.nr_aktualnego_odcinka < trasa.Odcinki.Count)
             {
                 aktualna_pozycja.z = trasa.KoniecAktualnegoOdcinka().z;
             }
@@ -99,9 +99,9 @@ namespace Symulator_lotow
         public void ZmienTrase()
         {
             OdcinekTrasy losowy = GenerujLosowyOdcinek(Symulator.MAXX, Symulator.MAXY);
-            if (trasa.nr_aktualnego_odcinka < trasa.odcinki.Count - 1) // jesli zostal wiecej niz 1 odcinek na trasie
+            if (trasa.nr_aktualnego_odcinka < trasa.Odcinki.Count - 1) // jesli zostal wiecej niz 1 odcinek na trasie
             {
-                trasa.odcinki[trasa.nr_aktualnego_odcinka] = new OdcinekTrasy(losowy);
+                trasa.Odcinki[trasa.nr_aktualnego_odcinka] = new OdcinekTrasy(losowy);
             }
         }
     }

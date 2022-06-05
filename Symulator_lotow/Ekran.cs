@@ -9,9 +9,11 @@ namespace Symulator_lotow
         private Font fnt = new Font("Arial", 10);
         private void RysujProstokat(Point pos, Point size, Color kolor, Graphics g)
         {
-            SolidBrush brush = new SolidBrush(kolor);
-            Rectangle rect = new Rectangle(pos.X, pos.Y, size.X, size.Y);
-            g.FillRectangle(brush, rect);
+            using (SolidBrush brush = new SolidBrush(kolor))
+            {
+                Rectangle rect = new Rectangle(pos.X, pos.Y, size.X, size.Y);
+                g.FillRectangle(brush, rect);
+            }
         }
 
         private void RysujKwadrat(Point pos, int bok, Color kolor, Graphics g)
@@ -21,8 +23,10 @@ namespace Symulator_lotow
 
         private void RysujKolo(Point pos, int r, Color kolor, Graphics g)
         {
-            SolidBrush brush = new SolidBrush(kolor);
-            g.FillEllipse(brush, pos.X, pos.Y, 2 * r, 2 * r);
+            using (SolidBrush brush = new SolidBrush(kolor))
+            {
+                g.FillEllipse(brush, pos.X, pos.Y, 2 * r, 2 * r);
+            }
         }
 
         public void RysujNapis(string napis, Brush kolor, Point pos, Graphics g)
@@ -53,8 +57,10 @@ namespace Symulator_lotow
 
         private void RysujWielokat(Point[] wierzcholki, Color kolor, Graphics g)
         {
-            SolidBrush brush = new SolidBrush(kolor);
-            g.FillPolygon(brush, wierzcholki);
+            using (SolidBrush brush = new SolidBrush(kolor))
+            {
+                g.FillPolygon(brush, wierzcholki);
+            }         
         }
         private void RysujTrojkat(Point p1, Point p2, Point p3, Color kolor, Graphics g)
         {
@@ -63,8 +69,10 @@ namespace Symulator_lotow
         }
         public void RysujLamana(Point[] points, Color kolor, Graphics g)
         {
-            Pen pen = new Pen(kolor, 1);//1 to grubosc linii
-            g.DrawLines(pen, points);
+            using (Pen pen = new Pen(kolor, 1))//1 to grubosc linii
+            {
+                g.DrawLines(pen, points);
+            }       
         }
 
         public void RysujObiektLatajacy(Point pos_srodka, Color kolor, int rozmiar, Graphics g)

@@ -22,7 +22,7 @@ namespace Symulator_lotow
         {
             foreach (ObiektyStale os in symulator.obiekty_stale)
             {
-                string opis = os.nazwa + "\nWysokosc " + os.wysokosc;
+                string opis = $"{os.nazwa}\nWysokosc {os.wysokosc}";
                 Point pos = new Point((int)os.pozycja_srodka.x, (int)os.pozycja_srodka.y);
                 if (os is Drzewo d)
                 {
@@ -47,7 +47,7 @@ namespace Symulator_lotow
 
         private void RysujTrase(ObiektyRuchome sp, Graphics g, Point pos)
         {
-            int ile_odcinkow = sp.trasa.odcinki.Count;
+            int ile_odcinkow = sp.trasa.Odcinki.Count;
             int nr_odcinka = sp.trasa.nr_aktualnego_odcinka;
             if (nr_odcinka < ile_odcinkow)
             {
@@ -55,7 +55,7 @@ namespace Symulator_lotow
                 points[0] = pos;
                 for (int i = nr_odcinka; i < ile_odcinkow; i++)
                 {
-                    Punkt koniec_odcinka = sp.trasa.odcinki[i].koniec_odcinka;
+                    Punkt koniec_odcinka = sp.trasa.Odcinki[i].koniec_odcinka;
                     points[i + 1 - nr_odcinka] = new Point((int)koniec_odcinka.x, (int)koniec_odcinka.y);
                 }
                 ekran.RysujLamana(points, Color.Black, g);
@@ -66,7 +66,7 @@ namespace Symulator_lotow
             foreach (ObiektyRuchome sp in symulator.statki_powietrzne)
             {
                 Point pos = new Point((int)sp.aktualna_pozycja.x, (int)sp.aktualna_pozycja.y);
-                string opis = sp.nazwa + "\nWysokosc " + sp.aktualna_pozycja.z + "\nPredkosc " + sp.trasa.PredkoscAktualnegoOdcinka();
+                string opis = $"{sp.nazwa}\nWysokosc {sp.aktualna_pozycja.z}\nPredkosc {sp.trasa.PredkoscAktualnegoOdcinka()}";
                 RysujTrase(sp,g, pos);
                 if (sp is Dron) ekran.RysujDron(pos, g);
                 else if (sp is Samolot) ekran.RysujSamolot(pos, g);
@@ -84,7 +84,7 @@ namespace Symulator_lotow
         }
         public void WczytajMape()
         {
-            string sciezka = Path.Combine(Environment.CurrentDirectory.ToString(), @"..\..\..\..\Mapa.txt");
+            string sciezka =("Mapa.txt");
             symulator.SprobujWczytacPlik(sciezka);
         }      
         private void SymulujRuch(Object myObject, EventArgs e)
@@ -103,7 +103,7 @@ namespace Symulator_lotow
         private void MessageKolizja(ObiektyRuchome sp)
         {
             sp.czy_skonczyl_lot = true;
-            sp.trasa.odcinki.Clear();
+            sp.trasa.Odcinki.Clear();
             if (can_send_message)
             {
                 can_send_message = false;
