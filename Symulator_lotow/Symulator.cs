@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace Symulator_lotow
 {
+	//Jedna z glownych klas programu. Odpowiadajaca za symulacje obiektow, wczytywanie obiektow z pliku i wykrywanie kolizji.
 	public class Symulator
 	{
 		internal List<ObiektyStale> obiekty_stale = new List<ObiektyStale>();
@@ -21,6 +22,7 @@ namespace Symulator_lotow
 		{
 		}
 
+		//Funkcja odpowiada za wczytywanie obiektow stalych z pliku. Jesli plik zawiera niepoprawne dane, to zglaszane sa odpowiednie wyjatki.
 		public void SprobujWczytacPlik(string sciezka)
 		{
 			try
@@ -65,7 +67,16 @@ namespace Symulator_lotow
 		}
 
 		private void WczytajLinie(int nr, string[] dane)
-        {		
+        {
+			/* FORMAT DANYCH	
+			W wierszu pliku dane oddzielone sa przecinkiem.
+			Jesli typ to blok oznaczony jako B to linia sklada sie z 5 danych: 
+				typ, wspolrzedna x srodka, wspolrzedna y srodka, dlugosc, szerokosc, wysokosc
+			W pozostalych przypadkach linia zawiera 4 dane.
+			W przypadku drzewa oznaczonego D lub komina oznaczonego K:
+				typ, wspolrzedna x srodka, wspolrzedna y srodka, promien, wysokosc
+			W przypadku wiezowca oznaczonego W dlugosc i szerokosc sa takie same (jest kwadratem):
+				typ, wspolrzedna x srodka, wspolrzedna y srodka, dlugosc, wysokosc*/
 			int x = Convert.ToInt32(dane[1]);
 			int y = Convert.ToInt32(dane[2]);
 			int z = Convert.ToInt32(dane[^1]);
@@ -93,10 +104,17 @@ namespace Symulator_lotow
 					throw new BadDataInFileException("Niepoprawne dane w pliku");
 			}
 		}
-
+		//Wykrywa zblizenia i kolizje. Zapisuje je do list wykryte_zblizenia i wykryte_kolizje w obiekcie klasy Symulator.
+		public void WykryjZblizeniaOrazKolizje()
+		{
+			wykryte_zblizenia.Clear();
+			wykryte_kolizje.Clear();
+			WykryjBliskieObiektyRuchome();
+			WykryjBliskieObiektyStale();
+		}
 		private void WykryjBliskieObiektyRuchome()
         {
-			for (int i = 0; i < statki_powietrzne.Count; ++i) //uzycie petli for zamiast foreach  aby nie dodawac 2 razy tej samej kolizji
+			for (int i = 0; i < statki_powietrzne.Count; ++i)
 			{
 				ObiektyRuchome sp = statki_powietrzne[i];
 				for (int j = i + 1; j < statki_powietrzne.Count; ++j)
@@ -133,32 +151,15 @@ namespace Symulator_lotow
 				}
 			}
 		}
-		public void WykryjKolizje()
-        {		
-			wykryte_zblizenia.Clear();
-			wykryte_kolizje.Clear();
-			WykryjBliskieObiektyRuchome();
-			WykryjBliskieObiektyStale();
-		}
-
-		private static ObiektyRuchome StatekLosowegoTypu(int id)
-        {
-			int rodzaj = rand.Next(0, ILE_RODZAJOW_SAMOLOTOW);
-            ObiektyRuchome statek = rodzaj switch
-            {
-                0 => new Dron("Dron " + id.ToString()),
-                1 => new Samolot("Samolot " + id.ToString()),
-                2 => new Smiglowiec("Smiglowiec " + id.ToString()),
-                3 => new Balon("Balon " + id.ToString()),
-                _ => new Szybowiec("Szybowiec " + id.ToString()),
-            };
-            return statek;
-		}
-
+		/*
+		Generuje losowe statki powietrzne. Kazdy typ samolotu ma równe szanse na wylosowanie sie.
+		Poczatkowa pozycja jest losowa, ale nie moze sie zaczynac od zajetego juz punktu (przez inny samolot lub budynek).
+		Jest ustalana losowa trasa, skladajaca sie z kilku prostych odcinkow.
+		*/
 		public void GenerujStatkiPowietrzne()
-        {
-			for(int i = 0; i < ILE_SAMOLOTOW; i++)
-            {
+		{
+			for (int i = 0; i < ILE_SAMOLOTOW; i++)
+			{
 				ObiektyRuchome nowy_statek = StatekLosowegoTypu(i);
 				do
 				{
@@ -173,8 +174,22 @@ namespace Symulator_lotow
 				nowy_statek.aktualna_pozycja.z = nowy_statek.trasa.KoniecAktualnegoOdcinka().z;
 				statki_powietrzne.Add(nowy_statek);
 			}
-        }
-		private bool CzyZajete(Punkt p)
+		}
+		private static ObiektyRuchome StatekLosowegoTypu(int id)
+        {
+			int rodzaj = rand.Next(0, ILE_RODZAJOW_SAMOLOTOW);
+            ObiektyRuchome statek = rodzaj switch
+            {
+                0 => new Dron("Dron " + id.ToString()),
+                1 => new Samolot("Samolot " + id.ToString()),
+                2 => new Smiglowiec("Smiglowiec " + id.ToString()),
+                3 => new Balon("Balon " + id.ToString()),
+                _ => new Szybowiec("Szybowiec " + id.ToString()),
+            };
+            return statek;
+		}
+
+		private bool CzyZajete(Punkt p) // Sprawdza czy w danym punkcie znajduje sie jakis samolot lub budynek
 		{
 			foreach (ObiektyRuchome sp in statki_powietrzne)
 			{
@@ -196,7 +211,7 @@ namespace Symulator_lotow
 			return (v.x * v2.x < 0) || (v.y * v2.y < 0); // gdy samolot dolatuje do konca odcinka skladowe jego predkosci zmieniaja sie na przeciwne
 		}
 
-		public void SymulujRuch(double krok)
+		public void SymulujRuch(double krok) //Symulacja ruchu, czyli obliczenie nowych wspolrzednych wszystkich obiektow ruchomych
 		{
 			for (int i=0;i<statki_powietrzne.Count;++i)
 			{

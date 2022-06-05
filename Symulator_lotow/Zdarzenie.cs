@@ -1,5 +1,6 @@
 ﻿namespace Symulator_lotow
 {
+    //Przechowuje informacje o obiektach bioracych udzial w kolizji lub zblizeniu
     public class Zdarzenie
     {
         public SymulowanyObiekt a, b;

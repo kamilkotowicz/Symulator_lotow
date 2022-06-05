@@ -13,10 +13,10 @@ namespace Symulator_lotow
             this.pozycja_srodka = srodek;
             this.nazwa = nazwa;
         }
-        public override abstract bool CzyZawieraPunkt(Punkt p);
-        public abstract double OdlegloscDoSamolotu(Punkt p);
+        public override abstract bool CzyZawieraPunkt(Punkt p); //Sprawdza czy punkt zawiera sie w walcu lub prostopadloscianie (w zaleznosci od klasy).
+        public abstract double OdlegloscDoSamolotu(Punkt p); // Zwraca odleglosc do najblizszego punktu nalezacego do walca lub prostopadloscianu w zaleznosci od klasy).
 
-        public static double NajblizszyPunkt(double x, double minx, double maxx)
+        public static double NajblizszyPunkt(double x, double minx, double maxx) //Zwraca wspolrzedna punktu lezacego na odcinku polozona najblizej danego punktu
         {
             if (x < minx) return minx;
             if (x > maxx) return maxx;
@@ -39,7 +39,7 @@ namespace Symulator_lotow
             return false;
         }
 
-        public override double OdlegloscDoSamolotu(Punkt p)
+        public override double OdlegloscDoSamolotu(Punkt p) //odleglosc miedzy pozycja samolotu a najblizsza do niej pozycja walca drzewa
         {
             Punkt srodek = new Punkt(pozycja_srodka);
             srodek.z = Math.Min(p.z, wysokosc);
@@ -61,7 +61,7 @@ namespace Symulator_lotow
             if (p.Odleglosc(srodek) <= promien && p.z <= wysokosc) return true;
             return false;
         }
-        public override double OdlegloscDoSamolotu(Punkt p)
+        public override double OdlegloscDoSamolotu(Punkt p) //odleglosc miedzy pozycja samolotu a najblizsza do niej pozycja walca komina
         {
             Punkt srodek = new Punkt(pozycja_srodka);
             srodek.z = Math.Min(p.z, wysokosc);
@@ -89,7 +89,7 @@ namespace Symulator_lotow
             return false;
         }
 
-        public override double OdlegloscDoSamolotu(Punkt p)
+        public override double OdlegloscDoSamolotu(Punkt p)//odleglosc miedzy pozycja samolotu a najblizsza do niej pozycja prostopadloscianu bloku
         {
             Punkt najblizszy = new Punkt(pozycja_srodka);
             najblizszy.x = NajblizszyPunkt(p.x, najblizszy.x - dlugosc, najblizszy.x + dlugosc);
@@ -115,7 +115,7 @@ namespace Symulator_lotow
             if (minx <= p.x && miny <= p.y && p.x <= maxx && p.y <= maxy && p.z <= wysokosc) return true;
             return false;     
         }
-        public override double OdlegloscDoSamolotu(Punkt p)
+        public override double OdlegloscDoSamolotu(Punkt p)//odleglosc miedzy pozycja samolotu a najblizsza do niej pozycja prostopadloscianu wiezowca
         {
             Punkt najblizszy = new Punkt(pozycja_srodka);
             najblizszy.x = NajblizszyPunkt(p.x, najblizszy.x - bok, najblizszy.x + bok);

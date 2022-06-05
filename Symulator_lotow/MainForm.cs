@@ -29,7 +29,7 @@ namespace Symulator_lotow
         }
         public void Redraw()
         {
-            this.pictureBox1.Invalidate();
+            this.pictureBox1.Invalidate(); //pozwala na ponowne narysowanie obiektow na ekranie
         }
 
     }

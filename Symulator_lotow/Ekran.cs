@@ -1,6 +1,7 @@
 ﻿using System;
 namespace Symulator_lotow
 {
+    //Klasa odpowiadajaca za wyswietlanie obiektow na ekranie. Wykorzystuje biblioteke graficzna System.Drawing platformy .NET
     public class Ekran
     {
         public Ekran()
@@ -34,22 +35,22 @@ namespace Symulator_lotow
             g.DrawString(napis, fnt, kolor, pos);
         }
 
-        public void RysujDrzewo(Point pos, int r, Graphics g) // promien <4,12>
+        public void RysujDrzewo(Point pos, int r, Graphics g) 
         {
             RysujKolo(pos, r, Color.Green, g);
         }
 
-        public void RysujKomin(Point pos, int r, Graphics g) //promien <8,20>
+        public void RysujKomin(Point pos, int r, Graphics g) 
         {
             RysujKolo(pos, r, Color.Brown, g);
         }
 
-        public void RysujBlok(Point pos, Point size, Graphics g)// boki <40,120>
+        public void RysujBlok(Point pos, Point size, Graphics g)
         {
             RysujProstokat(pos, size, Color.Gray, g);
         }
 
-        public void RysujWiezowiec(Point pos, int bok, Graphics g) //bok <40,120>
+        public void RysujWiezowiec(Point pos, int bok, Graphics g)
         {
             RysujKwadrat(pos, bok, Color.Blue, g);
         }

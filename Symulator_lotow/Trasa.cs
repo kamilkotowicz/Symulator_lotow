@@ -2,6 +2,7 @@
 
 namespace Symulator_lotow
 {
+    //Kazdy obiekt ruchomy posiada trase. Trasa sklada sie z listy odcinkow o stalym kierunku, wysokosci i predkosci.
     public class Trasa
     {
         private List<OdcinekTrasy> odcinki = new List<OdcinekTrasy>();

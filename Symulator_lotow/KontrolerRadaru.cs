@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 namespace Symulator_lotow
 {
+    //Klasa ktora kontroluje przebieg programu. Jest posrednikiem miedzy symulatorem, a  ekranem. Dodatkowo reaguje na kolizje i zblizenia i wyswietla odpowiednie okienka.
     public class KontrolerRadaru
     {
         private readonly MainForm mainForm;
@@ -90,7 +91,7 @@ namespace Symulator_lotow
         private void SymulujRuch(Object myObject, EventArgs e)
         {
             symulator.SymulujRuch(KROK_SYMULACJI);
-            symulator.WykryjKolizje();
+            symulator.WykryjZblizeniaOrazKolizje();
             ZareagujNaZdarzenia(symulator.wykryte_zblizenia, symulator.wykryte_kolizje);
             mainForm.Redraw();
         }
@@ -100,7 +101,8 @@ namespace Symulator_lotow
         {
             return (so is ObiektyRuchome sp && sp.czy_skonczyl_lot == true);
         }
-        private void MessageKolizja(ObiektyRuchome sp)
+
+        private void MessageKolizja(ObiektyRuchome sp) //Wyswietla okienko z informacja o kolizji. Przerywa symulacje do momentu wcisniecia OK.
         {
             sp.czy_skonczyl_lot = true;
             sp.trasa.Odcinki.Clear();
@@ -112,11 +114,11 @@ namespace Symulator_lotow
                 if (res == DialogResult.OK)
                 {
                     can_send_message = true;
-                    KROK_SYMULACJI = 0.25;
+                    KROK_SYMULACJI = 0.25;// zwiekszam szybkosc symulacji
                 }
             }
         }
-        private void MessageZblizenie(NiebezpieczneZblizenie zdarzenie)
+        private void MessageZblizenie(NiebezpieczneZblizenie zdarzenie)//Wyswietla okienko z informacja o zblizeniu. Przerywa symulacje do momentu wcisniecia OK.
         {
             string message = $"Zblizenie miedzy {zdarzenie.a.nazwa} a {zdarzenie.b.nazwa}\nOdleglosc {zdarzenie.odleglosc} ";
             can_send_message = false;
@@ -127,7 +129,7 @@ namespace Symulator_lotow
                 can_send_message = true;
                 KROK_SYMULACJI = 0.25; // zwiekszam szybkosc symulacji, aby pozbyc sie wielokrotnie wyskakujacych okienek do tego samego zblizenia
             }
-            else if (res == DialogResult.Yes)
+            else if (res == DialogResult.Yes) //oba samoloty zmieniaja swoja trase na losowa
             {
                 if (zdarzenie.a is ObiektyRuchome ob1)
                 {
@@ -164,7 +166,7 @@ namespace Symulator_lotow
         {
             if (wykryte_zblizenia.Count > 1)
             {
-                wykryte_zblizenia.Sort((a, b) => a.odleglosc.CompareTo(b.odleglosc)); //zblizenia z mniejsza odlegloscia powinny byc obsluzone przez kontrolera lotu jako pierwsze
+                wykryte_zblizenia.Sort((a, b) => a.odleglosc.CompareTo(b.odleglosc)); //zblizenia z mniejsza odlegloscia sa wyswietlane jako pierwsze
             }
             foreach (NiebezpieczneZblizenie zblizenie in wykryte_zblizenia)
             {
@@ -180,7 +182,7 @@ namespace Symulator_lotow
         }
         private void ZareagujNaZdarzenia(List<NiebezpieczneZblizenie> wykryte_zblizenia, List<Kolizja> wykryte_kolizje)
         {
-            if (wykryte_zblizenia.Count + wykryte_kolizje.Count == 0)
+            if (wykryte_zblizenia.Count + wykryte_kolizje.Count == 0) //jesli nie ma juz zdarzen spowolnij szybkosc symulacji do normalnej
             {
                 KROK_SYMULACJI = 0.05;
                 return;
@@ -194,7 +196,7 @@ namespace Symulator_lotow
             WczytajMape();
             symulator.GenerujStatkiPowietrzne();
             System.Windows.Forms.Timer t1 = new System.Windows.Forms.Timer();
-            t1.Tick += new EventHandler(SymulujRuch);
+            t1.Tick += new EventHandler(SymulujRuch);//funkcja uruchamiana co 500 milisekund
             t1.Interval = 500;
             t1.Start();
         }

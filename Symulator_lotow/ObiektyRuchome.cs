@@ -13,6 +13,8 @@ namespace Symulator_lotow
         public Punkt aktualna_pozycja = new Punkt(0, 0, 0);
         public Trasa trasa = new();
         public bool czy_skonczyl_lot = false;
+
+        // Kazdy rodzaj samolotu ma swoja okreslona minimalna i maksymalna wysokosc i predkosc
         public virtual int Hmin { get; }
         public virtual int Hmax { get; }
         public virtual int Vmin { get; }
@@ -30,7 +32,7 @@ namespace Symulator_lotow
         {
             this.nazwa = nazwa;
         }
-        public Punkt LosujPozycje(int maxx, int maxy)
+        private Punkt LosujPozycje(int maxx, int maxy)
         {
             Random rand = new Random();
             int x = rand.Next(0, maxx);
@@ -51,7 +53,7 @@ namespace Symulator_lotow
             return new OdcinekTrasy(predkosc, koniec_odcinka);
         }
 
-        public void UstawTraseLosowo(int maxx,int maxy,int odcinki_min, int odcinki_max)
+        public void UstawTraseLosowo(int maxx,int maxy,int odcinki_min, int odcinki_max) // Trasa sklada sie z kilku odcinkow o stalej predkosci i wysokosci
         {
             Random rand = new Random();
             int LICZBA_ODCINKOW = rand.Next(odcinki_min, odcinki_max);
@@ -62,7 +64,7 @@ namespace Symulator_lotow
                 trasa.Odcinki.Add(odc);
             }
         }
-        public Punkt SkladowePredkosci()
+        public Punkt SkladowePredkosci()// Zwraca wektor predkosci w kierunku x,y,z (gdzie z = 0 bo wysokosc jest stala)
         {
             double licznik_x = (trasa.KoniecAktualnegoOdcinka().x - aktualna_pozycja.x) * trasa.PredkoscAktualnegoOdcinka();
             double licznik_y = (trasa.KoniecAktualnegoOdcinka().y - aktualna_pozycja.y) * trasa.PredkoscAktualnegoOdcinka();
@@ -96,7 +98,7 @@ namespace Symulator_lotow
                 czy_skonczyl_lot = true;
             }
         }
-        public void ZmienTrase()
+        public void ZmienTrase() //zmienia aktualny odcinek trasy, a kolejne pozostawia bez zmian
         {
             OdcinekTrasy losowy = GenerujLosowyOdcinek(Symulator.MAXX, Symulator.MAXY);
             if (trasa.nr_aktualnego_odcinka < trasa.Odcinki.Count - 1) // jesli zostal wiecej niz 1 odcinek na trasie

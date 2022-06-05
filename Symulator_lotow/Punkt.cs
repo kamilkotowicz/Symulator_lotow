@@ -16,7 +16,7 @@
             this.y = p.y;
             this.z = p.z;
         }
-        public double Odleglosc(Punkt p)
+        public double Odleglosc(Punkt p) //odleglosc miedzy dwoma punktami
         {
             double dx=x-p.x;
             double dy=y-p.y;
